@@ -5,4 +5,18 @@ public class Property {
 	private int totalLivableArea;
 	private String zipcode;
 
+	
+	public int getMarketValue() {
+		return marketValue;
+	}
+	
+	public int getTotalLivableArea() {
+		return totalLivableArea;
+	}
+
+	public String getZipCode() {
+		return zipcode;
+	}
+	
+	
 }

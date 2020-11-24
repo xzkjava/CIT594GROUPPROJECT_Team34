@@ -45,36 +45,36 @@ public abstract class Processor {
 	
 	//when user types 1, run this method
 	public int calculateTotalPopulation() {
-		//todo
+		// todo
 		
 		return 0;
 	}
 	
-	//when user tyes 2, run this method
+	// when user types 2, run this method
 	public double calculateFinePerCapita() {
-		//todo
+		// todo
 		return 0.0000;
 	}
 	
-	//when user types 3, run this method
+	// when user types 3, run this method
 	public int calculateMarketValuePerProperty(String zipcode) {
-		List<Property> propertiesForZip = new ArrayList<>();
-		//TODO: populate propertiesForZip list
 		
+		List<Property> propertiesForZip = getPropertiesByZip(zipcode);
 		return calculateDataPerProperty(propertiesForZip, new AverageValueCalculator());
-	}
-	
-	//when user types 4, run this method
-	public int calculateLivableAreaPerProperty(String zipcode) {
-		List<Property> propertiesForZip = new ArrayList<>();
-		//todo: populate propertiesForZip list
 		
-		return calculateDataPerProperty(propertiesForZip, new AverageAreaCalculator());
 	}
 	
-	//when user types 5, run this method
+	// when user types 4, run this method
+	public int calculateLivableAreaPerProperty(String zipcode) {
+		
+		List<Property> propertiesForZip = getPropertiesByZip(zipcode);
+		return calculateDataPerProperty(propertiesForZip, new AverageAreaCalculator());
+		
+	}
+	
+	// when user types 5, run this method
 	public int calculateMarketValuePerCapita(String zipcode) {
-		//todo
+		
 		
 		return 0;
 	}
@@ -84,6 +84,22 @@ public abstract class Processor {
 		
 		return cal.calculateDataPerProperty(properties);
 	
+	}
+	
+	// this utility method returns a list of all the properties with a given a zip code  (used in calculateDataPerProperty)
+	private List<Property> getPropertiesByZip(String zipcode) {
+		List<Property> matchingProperties = new ArrayList<Property>(); 
+		
+		for (Property p : properties) {
+			
+			if (p.getZipCode().equals(zipcode)) {
+				matchingProperties.add(p);
+			}
+			
+		}
+		
+		return matchingProperties;
+		
 	}
 	
 	
