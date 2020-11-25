@@ -1,16 +1,16 @@
 package edu.upenn.cit594.data;
 
 public class Property {
-	private int marketValue;
-	private int totalLivableArea;
+	private String marketValue;
+	private String totalLivableArea;
 	private String zipcode;
 
 	
-	public int getMarketValue() {
+	public String getMarketValue() {
 		return marketValue;
 	}
 	
-	public int getTotalLivableArea() {
+	public String getTotalLivableArea() {
 		return totalLivableArea;
 	}
 

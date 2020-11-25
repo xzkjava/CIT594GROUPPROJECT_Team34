@@ -1,11 +1,10 @@
 package edu.upenn.cit594.processor;
 
-
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.SortedMap;
 
 import edu.upenn.cit594.data.ParkingViolation;
-import edu.upenn.cit594.data.Population;
 import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.datamanagement.ParkingViolationReader;
 import edu.upenn.cit594.datamanagement.PopulationReader;
@@ -20,11 +19,11 @@ public abstract class Processor {
 	
 	private PopulationReader populationReader;
 	
-	private List<ParkingViolation> violations = new ArrayList<>();
+	private HashMap<String, List<ParkingViolation>> zipViolationMap = new HashMap<>();
 	
-	private List<Property> properties = new ArrayList<>();
+	private HashMap<String, Integer> zipPopulationMap= new HashMap<>();
 	
-	private List<Population> populations = new ArrayList<>();
+	private HashMap<String, List<Property>> zipPropertyMap = new HashMap<>();
 	
 	public Processor (String parkingFileType, String parkingFileName, String propertyFileName, String populationFileName, Logger logger) {
 		
@@ -34,11 +33,11 @@ public abstract class Processor {
 		
 		populationReader = new PopulationReader(populationFileName, logger);
 		
-		violations = parkingReader.parseParkingViolations();
+		zipViolationMap = parkingReader.parseParkingViolations();
 		
-		properties = propertyReader.parseProperties();
+		zipPopulationMap = populationReader.parsePopulation();
 		
-		populations = populationReader.parsePopulation();
+		zipPropertyMap = propertyReader.parseProperties();
 	}
 	
 	public abstract ParkingViolationReader createReader(String parkignFileType, String parkingFilename, Logger logger);
@@ -51,15 +50,16 @@ public abstract class Processor {
 	}
 	
 	// when user types 2, run this method
-	public double calculateFinePerCapita() {
+	//need to modify this return type
+	public SortedMap<String, Double> calculateFinePerCapita() {
 		// todo
-		return 0.0000;
+		return null;
 	}
 	
 	// when user types 3, run this method
 	public int calculateMarketValuePerProperty(String zipcode) {
 		
-		List<Property> propertiesForZip = getPropertiesByZip(zipcode);
+		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
 		return calculateDataPerProperty(propertiesForZip, new AverageValueCalculator());
 		
 	}
@@ -67,7 +67,7 @@ public abstract class Processor {
 	// when user types 4, run this method
 	public int calculateLivableAreaPerProperty(String zipcode) {
 		
-		List<Property> propertiesForZip = getPropertiesByZip(zipcode);
+		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
 		return calculateDataPerProperty(propertiesForZip, new AverageAreaCalculator());
 		
 	}
@@ -86,21 +86,21 @@ public abstract class Processor {
 	
 	}
 	
-	// this utility method returns a list of all the properties with a given a zip code  (used in calculateDataPerProperty)
-	private List<Property> getPropertiesByZip(String zipcode) {
-		List<Property> matchingProperties = new ArrayList<Property>(); 
-		
-		for (Property p : properties) {
-			
-			if (p.getZipCode().equals(zipcode)) {
-				matchingProperties.add(p);
-			}
-			
-		}
-		
-		return matchingProperties;
-		
-	}
+//	// this utility method returns a list of all the properties with a given a zip code  (used in calculateDataPerProperty)
+//	private List<Property> getPropertiesByZip(String zipcode) {
+//		List<Property> matchingProperties = new ArrayList<Property>(); 
+//		
+//		for (Property p : properties) {
+//			
+//			if (p.getZipCode().equals(zipcode)) {
+//				matchingProperties.add(p);
+//			}
+//			
+//		}
+//		
+//		return matchingProperties;
+//		
+//	}
 	
 	
 	

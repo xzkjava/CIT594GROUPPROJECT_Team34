@@ -1,5 +1,6 @@
 package edu.upenn.cit594.datamanagement;
 
+import java.util.HashMap;
 import java.util.List;
 
 import edu.upenn.cit594.data.ParkingViolation;
@@ -14,7 +15,7 @@ public class ParkingCSVReader extends ParkingViolationReader {
 	}
 
 	@Override
-	public List<ParkingViolation> parseParkingViolations() {
+	public HashMap<String, List<ParkingViolation>> parseParkingViolations() {
 		// TODO Auto-generated method stub
 		return null;
 	

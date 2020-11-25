@@ -3,6 +3,7 @@ package edu.upenn.cit594.datamanagement;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.upenn.cit594.data.Property;
@@ -24,8 +25,8 @@ public class PropertyReader {
 		}
 	}
 	
-	
-	public List<Property> parseProperties(){
+	//this returns a map that associates a zipcode with a list of properties
+	public HashMap<String, List<Property>> parseProperties(){
 		//TODO
 		return null;
 	}

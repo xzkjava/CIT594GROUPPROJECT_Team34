@@ -3,6 +3,7 @@ package edu.upenn.cit594.datamanagement;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.upenn.cit594.data.Population;
@@ -24,7 +25,8 @@ public class PopulationReader {
 	
 	}
 	
-	public List<Population> parsePopulation(){
+	//this method returns a map that associates a zipcode with the population size
+	public HashMap<String, Integer> parsePopulation(){
 		//TODO
 		return null;
 	}

@@ -2,6 +2,7 @@ package edu.upenn.cit594.datamanagement;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.upenn.cit594.data.ParkingViolation;
@@ -23,5 +24,6 @@ public abstract class ParkingViolationReader {
 	
 	}
 	
-	public abstract List<ParkingViolation> parseParkingViolations();
+	//this method maps a zipcode with a list of parking violations
+	public abstract HashMap<String, List<ParkingViolation>> parseParkingViolations();
 }
