@@ -1,8 +1,11 @@
 package edu.upenn.cit594.processor;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 import edu.upenn.cit594.data.ParkingViolation;
 import edu.upenn.cit594.data.Property;
@@ -44,7 +47,21 @@ public abstract class Processor {
 	
 	//when user types 1, run this method
 	public int calculateTotalPopulation() {
-		// todo
+		
+		if (zipPopulationMap.size() < 1) {
+			// check for empty set
+			return 0;
+		}
+		
+		int population = 0;
+		
+		// iterate over set and sum up populations
+		Iterator<Entry<String, Integer>> it = zipPopulationMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, Integer> next = it.next();
+			population = population + next.getValue();
+		}
+		
 		
 		return 0;
 	}
@@ -52,8 +69,52 @@ public abstract class Processor {
 	// when user types 2, run this method
 	//need to modify this return type
 	public SortedMap<String, Double> calculateFinePerCapita() {
-		// todo
-		return null;
+		
+		if (zipViolationMap.size() < 1 || zipPopulationMap.size() < 1) {
+			return null;
+		}
+		
+		SortedMap<String, Double> finesByZip = new TreeMap<String, Double>();
+		
+		Iterator<Entry<String, List<ParkingViolation>>> it = zipViolationMap.entrySet().iterator();
+		while (it.hasNext()) {
+			
+			Entry<String, List<ParkingViolation>> next = it.next();
+			String currentZip = next.getKey();	
+			List<ParkingViolation> violationsInZip = next.getValue();
+			
+			// if the population of the zip code is unknown, skip
+			if (zipPopulationMap.get(currentZip) == null) {
+				continue;
+			}
+			// if this zip code has no population, skip
+			int currentPopulation = zipPopulationMap.get(currentZip);
+			if (currentPopulation < 1) {
+				continue;
+			}
+			
+			int totalFines = 0;
+			for (ParkingViolation p : violationsInZip) {
+				if (p.getState() != "PA" || p.getZipCode() == null) {
+					// skip over non-PA plates and unknown zip codes
+					continue;
+				}
+				// otherwise, add the fine amount to total for zip code
+				totalFines = totalFines + p.getFine();
+			}
+			
+			// if total fines is 0 (or negative, skip
+			if (totalFines < 1) {
+				continue;
+			}
+			
+			// calculate fines per capita and add to final set
+			double finesPerCapita = ((double) totalFines) / currentPopulation; 
+			finesByZip.put(currentZip, finesPerCapita);
+			
+		}
+		
+		return finesByZip;
 	}
 	
 	// when user types 3, run this method
