@@ -36,6 +36,7 @@ public class ParkingCSVReader extends ParkingViolationReader {
 				
 				try {
 					fine = Integer.parseInt(wordsInLine[1]);
+				
 				}catch(NumberFormatException e) {
 					e.printStackTrace();
 				}
