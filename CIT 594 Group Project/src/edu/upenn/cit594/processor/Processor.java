@@ -62,8 +62,8 @@ public abstract class Processor {
 			population = population + next.getValue();
 		}
 		
+		return population;
 		
-		return 0;
 	}
 	
 	// when user types 2, run this method
@@ -138,8 +138,28 @@ public abstract class Processor {
 	// when user types 5, run this method
 	public int calculateMarketValuePerCapita(String zipcode) {
 		
+		int populationOfZip = zipPopulationMap.get(zipcode);
+		if (populationOfZip == 0) {
+			// population not found (or zipcode has no population)
+			return 0;
+		}
 		
-		return 0;
+		int totalPropertyVal = 0;	// total property value of zipcode
+		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
+		for (Property p : propertiesForZip) {
+			try {
+				// add property value of this property to the total
+				int propertyVal = Integer.parseInt(p.getMarketValue());
+				totalPropertyVal = totalPropertyVal + propertyVal;
+			
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		// calculate the average per capita and return value
+		return (int) totalPropertyVal / populationOfZip;
+		
 	}
 	
 	//this utility method will be called in calculateMarketValuePerHome and calculateLivableAreaPerHome methods
