@@ -81,6 +81,7 @@ public class PropertyReader {
 				Property propertyToAdd = new Property(marketValue, area, zipcode);
 				
 				if(!ret.containsKey(zipcode)) {
+					
 					ArrayList<Property> properties = new ArrayList<>();
 					
 					properties.add(propertyToAdd);

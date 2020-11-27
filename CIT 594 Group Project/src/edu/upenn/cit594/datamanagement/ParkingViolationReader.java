@@ -14,7 +14,9 @@ public abstract class ParkingViolationReader {
 	public ParkingViolationReader(String fileName, Logger logger) {
 		
 		try {
+			
 			fileReader = new FileReader(fileName);
+			
 			logger.log(String.valueOf(System.currentTimeMillis()) + " " + fileName + " is opened to read.\n");
 		
 		} catch (FileNotFoundException e) {

@@ -21,6 +21,7 @@ public class PopulationReader {
 			logger.log(String.valueOf(System.currentTimeMillis()) + " " + fileName + " is opened to read.\n");
 		}
 		catch(FileNotFoundException e) {
+			
 			e.printStackTrace();
 		}
 	

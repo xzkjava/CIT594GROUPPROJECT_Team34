@@ -58,6 +58,7 @@ public abstract class Processor {
 		// iterate over set and sum up populations
 		Iterator<Entry<String, Integer>> it = zipPopulationMap.entrySet().iterator();
 		while (it.hasNext()) {
+			
 			Entry<String, Integer> next = it.next();
 			population = population + next.getValue();
 		}

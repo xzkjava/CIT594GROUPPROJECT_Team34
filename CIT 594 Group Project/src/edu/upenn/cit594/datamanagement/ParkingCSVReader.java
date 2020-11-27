@@ -29,6 +29,7 @@ public class ParkingCSVReader extends ParkingViolationReader {
 		
 		try {
 			while ((line = buffReader.readLine()) != null) {
+				
 				String[] wordsInLine = line.split(",");
 				
 				int fine = 0;
