@@ -28,21 +28,15 @@ public class ParkingCSVReader extends ParkingViolationReader {
 		String line;
 		
 		try {
-			
 			while ((line = buffReader.readLine()) != null) {
-				
 				String[] wordsInLine = line.split(",");
 				
 				int fine = 0;
 				
 				try {
-					
 					fine = Integer.parseInt(wordsInLine[1]);
-				
 				}catch(NumberFormatException e) {
-					
 					e.printStackTrace();
-				
 				}
 				
 				String state = wordsInLine[4];
@@ -55,13 +49,10 @@ public class ParkingCSVReader extends ParkingViolationReader {
 				if(!ret.containsKey(zipcode)) {
 					
 					ArrayList<ParkingViolation> violations = new ArrayList<>();
-					
 					violations.add(violationToAdd);
-					
 					ret.put(zipcode, violations);
 				}
 				else {
-					
 					ret.get(zipcode).add(violationToAdd);
 				}
 				

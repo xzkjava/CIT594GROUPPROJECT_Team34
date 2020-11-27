@@ -35,7 +35,6 @@ public class PropertyReader {
 		HashMap<String, List<Property>> ret = new HashMap<>();
 		
 		try {
-			
 			String line = buffReader.readLine();
 			
 			String[ ] wordsInLine = line.split(",");
@@ -65,11 +64,9 @@ public class PropertyReader {
 			while ((line = buffReader.readLine()) != null) {
 				
 				Pattern pattern = Pattern.compile("\".+\"");
-				
 				Matcher matcher = pattern.matcher(line);
 				
 				if(matcher.matches()) {
-					
 					matcher.replaceAll("\" \"");
 				}
 				
@@ -84,7 +81,6 @@ public class PropertyReader {
 				Property propertyToAdd = new Property(marketValue, area, zipcode);
 				
 				if(!ret.containsKey(zipcode)) {
-					
 					ArrayList<Property> properties = new ArrayList<>();
 					
 					properties.add(propertyToAdd);
@@ -92,9 +88,7 @@ public class PropertyReader {
 					ret.put(zipcode, properties);
 				}
 				else {
-					
 					ret.get(zipcode).add(propertyToAdd);
-				
 				}
 				
 				

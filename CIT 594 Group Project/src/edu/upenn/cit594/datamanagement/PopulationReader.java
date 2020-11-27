@@ -35,7 +35,6 @@ public class PopulationReader {
 		
 		try {
 			while ((line = buffReader.readLine()) != null) {
-				
 				String[] wordsInLine = line.split(" ");
 				
 				String zipcode = wordsInLine[0];
@@ -43,13 +42,10 @@ public class PopulationReader {
 				int size = 0;
 				
 				try {
-					
 					size = Integer.parseInt(wordsInLine[1]);
 				}
 				catch(NumberFormatException e) {
-					
 					e.printStackTrace();
-				
 				}
 				
 				ret.put(zipcode, size);
