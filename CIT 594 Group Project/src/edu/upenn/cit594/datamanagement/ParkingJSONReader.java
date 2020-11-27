@@ -41,9 +41,11 @@ public class ParkingJSONReader extends ParkingViolationReader{
 		    	int fine = 0;
 		    	 
 		    	 try{
+		    		 
 		    		 Integer.parseInt(violation.get("fine").toString());
 		    	 }
 		    	 catch(NumberFormatException e) {
+		    		 
 		    		 e.printStackTrace();
 		    	 }
 		    	
@@ -57,11 +59,15 @@ public class ParkingJSONReader extends ParkingViolationReader{
 		    	 if (!ret.containsKey(zipcode)) {
 		    		 
 		    		 ArrayList<ParkingViolation> violationList = new ArrayList<>();
+		    		 
 		    		 violationList.add(violationToAdd);
+		    		 
 		    		 ret.put(zipcode, violationList);
 		    	 }
 		    	 else {
+		    		 
 		    		 ret.get(zipcode).add(violationToAdd);
+		    	 
 		    	 }
 			}
 		} catch (IOException e) {
