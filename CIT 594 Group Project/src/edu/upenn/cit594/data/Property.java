@@ -5,6 +5,11 @@ public class Property {
 	private String totalLivableArea;
 	private String zipcode;
 
+	public Property(String marketValue, String totalLivableArea, String zipcode) {
+		this.marketValue = marketValue;
+		this.totalLivableArea = totalLivableArea;
+		this.zipcode = zipcode;
+	}
 	
 	public String getMarketValue() {
 		return marketValue;

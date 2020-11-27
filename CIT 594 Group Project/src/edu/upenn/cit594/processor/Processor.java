@@ -70,7 +70,7 @@ public abstract class Processor {
 	//need to modify this return type
 	public SortedMap<String, Double> calculateFinePerCapita() {
 		
-		if (zipViolationMap.size() < 1 || zipPopulationMap.size() < 1) {
+		if (zipViolationMap.size() < 1) {
 			return null;
 		}
 		
@@ -83,12 +83,14 @@ public abstract class Processor {
 			String currentZip = next.getKey();	
 			List<ParkingViolation> violationsInZip = next.getValue();
 			
-			// if the population of the zip code is unknown, skip
-			if (zipPopulationMap.get(currentZip) == null) {
+			// if the population of the zip code doesn't contain this zipcode or is unknown, skip
+			if (!zipPopulationMap.containsKey(currentZip) || zipPopulationMap.get(currentZip) == null) {
 				continue;
 			}
 			// if this zip code has no population, skip
 			int currentPopulation = zipPopulationMap.get(currentZip);
+			//need to clarify this following logic with instructor
+			//the instruction says "not display", doesn't say "not consider when population = 0
 			if (currentPopulation < 1) {
 				continue;
 			}
