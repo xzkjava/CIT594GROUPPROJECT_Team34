@@ -72,6 +72,7 @@ public class ParkingJSONReader extends ParkingViolationReader{
 			
 			e.printStackTrace();
 		}
+		
 		return ret;
 	
 	

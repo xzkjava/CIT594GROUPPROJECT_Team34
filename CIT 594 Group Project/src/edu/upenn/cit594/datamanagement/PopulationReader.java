@@ -16,6 +16,7 @@ public class PopulationReader {
 	public PopulationReader(String fileName, Logger logger) {
 		
 		try {
+			
 			buffReader = new BufferedReader (new FileReader(fileName));
 			
 			logger.log(String.valueOf(System.currentTimeMillis()) + " " + fileName + " is opened to read.\n");

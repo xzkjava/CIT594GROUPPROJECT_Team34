@@ -26,6 +26,7 @@ public abstract class ParkingViolationReader {
 	
 	}
 	
+	
 	//this method maps a zipcode with a list of parking violations
 	public abstract HashMap<String, List<ParkingViolation>> parseParkingViolations();
 }
