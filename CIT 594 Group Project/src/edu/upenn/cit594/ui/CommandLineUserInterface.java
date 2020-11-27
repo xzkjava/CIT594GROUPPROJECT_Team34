@@ -1,7 +1,12 @@
 package edu.upenn.cit594.ui;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
+import java.util.SortedMap;
+import java.util.Map.Entry;
 
+import edu.upenn.cit594.data.ParkingViolation;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.CSVProcessor;
 import edu.upenn.cit594.processor.JSONProcessor;
@@ -103,26 +108,32 @@ public class CommandLineUserInterface {
 			case 0:
 				System.exit(0);
 			case 1:
-				processor.calculateTotalPopulation();
+				int totalPopulation = processor.calculateTotalPopulation();
+				System.out.println(totalPopulation) ;
 				displayPrompts();
 				break;
 			case 2:
-				processor.calculateFinePerCapita();
+				SortedMap<String, Double> finesPerZip = processor.calculateFinePerCapita();
+				Iterator<Entry<String, Double>> it = finesPerZip.entrySet().iterator();
+				while (it.hasNext()) {
+					Entry<String, Double> next = it.next();
+					System.out.println(next.getKey() + ": " + next.getValue());
+				}
 				displayPrompts();
 				break;
 			case 3:
 				zipcode = askForZipCode();
-				processor.calculateMarketValuePerProperty(zipcode);
+				System.out.println(processor.calculateMarketValuePerProperty(zipcode));
 				displayPrompts();
 				break;	
 			case 4:
 				zipcode = askForZipCode();
-				processor.calculateLivableAreaPerProperty(zipcode);
+				System.out.println(processor.calculateLivableAreaPerProperty(zipcode));
 				displayPrompts();
 				break;
 			case 5:
 				zipcode = askForZipCode();
-				processor.calculateMarketValuePerCapita(zipcode);
+				System.out.println(processor.calculateMarketValuePerCapita(zipcode));
 				displayPrompts();
 				break;
 			case 6:
