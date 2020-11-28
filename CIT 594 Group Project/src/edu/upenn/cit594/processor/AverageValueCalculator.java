@@ -13,7 +13,7 @@ public class AverageValueCalculator implements PropertyCalculator{
 			throw new IllegalArgumentException("The argument to calculateDataPerProperty() should not be null");
 		}
 		if (properties.size() == 0) {
-			return 0;			// no properties
+			return 0;			// no properties, return 0
 		}
 		
 		int count = 0; 			// number of properties in this zip code
@@ -22,13 +22,15 @@ public class AverageValueCalculator implements PropertyCalculator{
 		for (Property p: properties) {
 			
 			if (!p.validateString(p.getMarketValue())) {
+				// invalid format for marketValue, skip this 
 				continue;
 			}
+			
 			try {
+				
+				// add this property's price to running total and update count
 				int marketValue = Integer.parseInt(p.getMarketValue());
-				
 				totalPrice = totalPrice + marketValue;
-				
 				count++;
 				
 			}catch(NumberFormatException e) {
@@ -38,9 +40,11 @@ public class AverageValueCalculator implements PropertyCalculator{
 		}
 		
 		if(count == 0) {
+			// no properties with valid marketValue, return 0
 			return 0;
 		}
-		// TO-DO: need to truncate not round this value
+		
+		// calculate average and return to user
 		return (int) totalPrice / count;	
 	}
 

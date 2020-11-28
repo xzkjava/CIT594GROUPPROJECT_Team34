@@ -91,7 +91,7 @@ public abstract class Processor {
 			List<ParkingViolation> violationsInZip = next.getValue();
 			
 			
-			// if this zip code has no population, skip
+			// if this zipcode has no population, skip
 			int currentPopulation = zipPopulationMap.get(currentZip);
 			//need to clarify this following logic with instructor
 			//the instruction says "not display", doesn't say "not consider when population = 0
@@ -109,7 +109,7 @@ public abstract class Processor {
 				totalFines = totalFines + p.getFine();
 			}
 			
-			// if total fines is 0 (or negative, skip
+			// if total fines is 0 (or negative, skip)
 			if (totalFines < 1) {
 				continue;
 			}
@@ -147,15 +147,15 @@ public abstract class Processor {
 	
 	// when user types 5, run this method
 	public int calculateMarketValuePerCapita(String zipcode) {
-		//zipcode is not in the population file
+		// zipcode is not in the population file
 		if(!validateZipcode(zipcode)) {
 			return 0;
 		}
 		
 		int populationOfZip = zipPopulationMap.get(zipcode);
-		// population not found 
+
 		if (populationOfZip == 0) {
-			
+			// population not found 
 			return 0;
 		}
 		
@@ -196,22 +196,6 @@ public abstract class Processor {
 	
 	}
 	
-//	// this utility method returns a list of all the properties with a given a zip code  (used in calculateDataPerProperty)
-//	private List<Property> getPropertiesByZip(String zipcode) {
-//		List<Property> matchingProperties = new ArrayList<Property>(); 
-//		
-//		for (Property p : properties) {
-//			
-//			if (p.getZipCode().equals(zipcode)) {
-//				matchingProperties.add(p);
-//			}
-//			
-//		}
-//		
-//		return matchingProperties;
-//		
-//	}
-	
 	//This method is called in askForZipcode()
 	public boolean validateZipcode(String zipcode) {
 			
@@ -219,7 +203,7 @@ public abstract class Processor {
 			return true;
 		}		
 			
-			return false;	
+		return false;	
 	}
 	
 
