@@ -38,30 +38,35 @@ public class ParkingJSONReader extends ParkingViolationReader{
 		    	
 				JSONObject violation = (JSONObject) itr.next();
 		    	 
+				// extract state, zipcode, and fine from JSONObject
+				
 		    	int fine = 0;
-		    	 
-		    	 try{
+		    	
+		    	try {
 		    		 Integer.parseInt(violation.get("fine").toString());
-		    	 }
-		    	 catch(NumberFormatException e) {
+		    	} catch(NumberFormatException e) {
 		    		 e.printStackTrace();
-		    	 }
+		    	}
 		    	
-		    	 String  state = violation.get("state").toString();
+		    	String  state = violation.get("state").toString();
 		    	 
-		    	 String zipcode = violation.get("zip_code").toString();
-		    	 
-		    	 ParkingViolation violationToAdd = new ParkingViolation(fine, state, zipcode);
+		    	String zipcode = violation.get("zip_code").toString();
 		    	
-		   
-		    	 if (!ret.containsKey(zipcode)) {
+		    	// create new ParkingViolation with extracted information
+		    	 
+		    	ParkingViolation violationToAdd = new ParkingViolation(fine, state, zipcode);
+		    	
+		    	// add this ParkingViolation to ParkingViolations with this given zipcode
+		    	if (!ret.containsKey(zipcode)) {
 		    		 
 		    		 ArrayList<ParkingViolation> violationList = new ArrayList<>();
 		    		 violationList.add(violationToAdd);
 		    		 ret.put(zipcode, violationList);
-		    	 }
-		    	 else {
+		    		 
+		    	} else {
+		    		 // no other violations with this zipcode, create new map for zipcode
 		    		 ret.get(zipcode).add(violationToAdd);
+		    		 
 		    	 }
 			}
 		} catch (IOException e) {
@@ -73,7 +78,7 @@ public class ParkingJSONReader extends ParkingViolationReader{
 			e.printStackTrace();
 		}
 		
-		return ret;
+		return ret;		// return parsed result
 	
 	
 	}

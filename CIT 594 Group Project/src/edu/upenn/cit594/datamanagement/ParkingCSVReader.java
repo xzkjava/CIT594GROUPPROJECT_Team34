@@ -37,7 +37,7 @@ public class ParkingCSVReader extends ParkingViolationReader {
 				try {
 					fine = Integer.parseInt(wordsInLine[1]);
 				
-				}catch(NumberFormatException e) {
+				} catch(NumberFormatException e) {
 					e.printStackTrace();
 				}
 				
@@ -57,7 +57,6 @@ public class ParkingCSVReader extends ParkingViolationReader {
 				else {
 					ret.get(zipcode).add(violationToAdd);
 				}
-				
 				
 			}
 		} catch (IOException e) {

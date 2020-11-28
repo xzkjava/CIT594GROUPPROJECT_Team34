@@ -20,13 +20,13 @@ public abstract class ParkingViolationReader {
 				//File file = new File("src" + File.separator + fileName);
 				
 				fileReader = new FileReader(fileName);
-				
+
 				logger.log(String.valueOf(System.currentTimeMillis()) + " " + fileName + " is opened to read.\n");
 				
-			} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 				
 				e.printStackTrace();
-			}
+		}
 			
 		
 	
