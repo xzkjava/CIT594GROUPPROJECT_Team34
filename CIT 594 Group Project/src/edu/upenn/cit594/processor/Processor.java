@@ -30,7 +30,7 @@ public abstract class Processor {
 	
 	public Processor (String parkingFileType, String parkingFileName, String propertyFileName, String populationFileName, Logger logger) {
 		
-		parkingReader = createReader(parkingFileType, parkingFileName, logger);
+		parkingReader = createReader(parkingFileName, logger);
 		
 		propertyReader = new PropertyReader(propertyFileName, logger);
 		
@@ -43,7 +43,7 @@ public abstract class Processor {
 		zipPropertyMap = propertyReader.parseProperties();
 	}
 	
-	public abstract ParkingViolationReader createReader(String parkignFileType, String parkingFilename, Logger logger);
+	public abstract ParkingViolationReader createReader(String parkingFilename, Logger logger);
 	
 	//when user types 1, run this method
 	public int calculateTotalPopulation() {
@@ -82,12 +82,15 @@ public abstract class Processor {
 			
 			Entry<String, List<ParkingViolation>> next = it.next();
 			String currentZip = next.getKey();	
-			List<ParkingViolation> violationsInZip = next.getValue();
 			
 			// if the population of the zip code doesn't contain this zipcode or is unknown, skip
 			if (!zipPopulationMap.containsKey(currentZip) || zipPopulationMap.get(currentZip) == null) {
 				continue;
 			}
+			
+			List<ParkingViolation> violationsInZip = next.getValue();
+			
+			
 			// if this zip code has no population, skip
 			int currentPopulation = zipPopulationMap.get(currentZip);
 			//need to clarify this following logic with instructor
@@ -98,7 +101,7 @@ public abstract class Processor {
 			
 			int totalFines = 0;
 			for (ParkingViolation p : violationsInZip) {
-				if (p.getState() != "PA" || p.getZipCode() == null) {
+				if (!p.getState().equals("PA") || p.getZipCode() == null) {
 					// skip over non-PA plates and unknown zip codes
 					continue;
 				}
@@ -186,7 +189,15 @@ public abstract class Processor {
 //		
 //	}
 	
-	
+	//This method is called in askForZipcode()
+	public boolean validateZipcode(String zipcode) {
+			
+		if(zipPopulationMap.containsKey(zipcode)) {
+			return true;
+		}		
+			
+			return false;	
+	}
 	
 
 }

@@ -1,7 +1,9 @@
 package edu.upenn.cit594.datamanagement;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,18 +13,24 @@ import edu.upenn.cit594.logging.Logger;
 public abstract class ParkingViolationReader {
 	public FileReader fileReader;
 	
-	public ParkingViolationReader(String fileName, Logger logger) {
+	public ParkingViolationReader(String fileName, Logger logger) {	
+			
+			
+     	try {
+				//File file = new File("src" + File.separator + fileName);
+				
+				fileReader = new FileReader(fileName);
+				
+				logger.log(String.valueOf(System.currentTimeMillis()) + " " + fileName + " is opened to read.\n");
+				
+			} catch (FileNotFoundException e) {
+				
+				e.printStackTrace();
+			}
+			
 		
-		try {
-			
-			fileReader = new FileReader(fileName);
-			
-			logger.log(String.valueOf(System.currentTimeMillis()) + " " + fileName + " is opened to read.\n");
+	
 		
-		} catch (FileNotFoundException e) {
-			
-			e.printStackTrace();
-		}
 	
 	}
 	

@@ -1,6 +1,7 @@
 package edu.upenn.cit594.datamanagement;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,9 +17,11 @@ public class PopulationReader {
 	public PopulationReader(String fileName, Logger logger) {
 		
 		try {
+				
+			//File file = new File("src" + File.separator + fileName);
 			
 			buffReader = new BufferedReader (new FileReader(fileName));
-			
+		
 			logger.log(String.valueOf(System.currentTimeMillis()) + " " + fileName + " is opened to read.\n");
 		}
 		catch(FileNotFoundException e) {

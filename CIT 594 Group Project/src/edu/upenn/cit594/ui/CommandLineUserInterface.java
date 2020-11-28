@@ -39,8 +39,12 @@ public class CommandLineUserInterface {
 		
 		while(in.hasNextLine()) {
 			input = in.nextLine();
-			if(!isUserInputAllDigits(input)) {
-				System.out.println("ERROR: The input should be only numbers");
+			if(input.isEmpty()) {
+				System.out.println("ERROR: The choice typed in is an empty string. Please enter a choice.");
+				
+			}
+			else if (!isUserInputAllDigits(input)) {
+				System.out.println("ERROR: The choice should be numbers only");
 				System.exit(1);
 			}
 			else {
@@ -148,7 +152,7 @@ public class CommandLineUserInterface {
 		String zipcode = "";
 		while(in.hasNext()) {
 			zipcode = in.next();
-			if(validateZipcode(zipcode)) {
+			if(processor.validateZipcode(zipcode)) {
 				break;
 			}
 			
@@ -162,9 +166,5 @@ public class CommandLineUserInterface {
 		
 	}
 	
-	//This method is called in askForZipcode()
-	private boolean validateZipcode(String zipcode) {
-		//TODO
-		return false;	
-	}
+	
 }

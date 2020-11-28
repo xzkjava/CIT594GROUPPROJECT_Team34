@@ -25,12 +25,12 @@ public class ParkingCSVReader extends ParkingViolationReader {
 		
 		HashMap<String, List<ParkingViolation>> ret = new HashMap<>();
 		
-		String line;
+		String line = "";
 		
 		try {
 			while ((line = buffReader.readLine()) != null) {
 				
-				String[] wordsInLine = line.split(",");
+				String[] wordsInLine = line.split(",", -1);
 				
 				int fine = 0;
 				
@@ -62,6 +62,10 @@ public class ParkingCSVReader extends ParkingViolationReader {
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			System.err.println("Error parsing line '" + line + "'.");
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.err.println("Error parsing line '" + line + "'.");
 			e.printStackTrace();
 		}
 		

@@ -10,6 +10,10 @@ public abstract class PropertyCalculator {
 	
     protected boolean validateString(String value) {
     	
+    	if(value == null || value.isEmpty()) {
+    		return false;
+    	}
+    	
     	if(value.charAt(0) == '-' || value.charAt(0) == '+') {
     		
     		for(int i = 1; i < value.length(); i++) {

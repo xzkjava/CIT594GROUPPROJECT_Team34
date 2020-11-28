@@ -40,6 +40,7 @@ public class Logger {
 		
 		try {
 			out.write(message);
+			out.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

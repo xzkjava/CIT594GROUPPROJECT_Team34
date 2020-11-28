@@ -1,5 +1,6 @@
 package edu.upenn.cit594.processor;
 
+import edu.upenn.cit594.datamanagement.ParkingJSONReader;
 import edu.upenn.cit594.datamanagement.ParkingViolationReader;
 import edu.upenn.cit594.logging.Logger;
 
@@ -13,9 +14,9 @@ public class JSONProcessor extends Processor{
 	}
 
 	@Override
-	public ParkingViolationReader createReader(String parkignFileType, String parkingFilename, Logger logger) {
-		// TODO Auto-generated method stub
-		return null;
+	public ParkingViolationReader createReader(String parkingFileName, Logger logger) {
+		
+		return new ParkingJSONReader(parkingFileName, logger);
 	}
 
 
