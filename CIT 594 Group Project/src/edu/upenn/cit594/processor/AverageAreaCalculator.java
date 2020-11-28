@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.upenn.cit594.data.Property;
 
-public class AverageAreaCalculator extends PropertyCalculator{
+public class AverageAreaCalculator implements PropertyCalculator{
 
 
 	@Override
@@ -24,7 +24,7 @@ public class AverageAreaCalculator extends PropertyCalculator{
 		
 		for (Property p: properties) {
 			
-			if (!validateString(p.getTotalLivableArea())) {
+			if (!p.validateString(p.getTotalLivableArea())) {
 				continue;
 			}
 			

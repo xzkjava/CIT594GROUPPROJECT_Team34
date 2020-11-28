@@ -127,6 +127,9 @@ public abstract class Processor {
 	public int calculateMarketValuePerProperty(String zipcode) {
 		
 		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
+		if(propertiesForZip == null) {
+			return 0;
+		}
 		return calculateDataPerProperty(propertiesForZip, new AverageValueCalculator());
 		
 	}
@@ -135,23 +138,43 @@ public abstract class Processor {
 	public int calculateLivableAreaPerProperty(String zipcode) {
 		
 		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
+		if (propertiesForZip == null) {
+			return 0;
+		}
 		return calculateDataPerProperty(propertiesForZip, new AverageAreaCalculator());
 		
 	}
 	
 	// when user types 5, run this method
 	public int calculateMarketValuePerCapita(String zipcode) {
+		//zipcode is not in the population file
+		if(!validateZipcode(zipcode)) {
+			return 0;
+		}
 		
 		int populationOfZip = zipPopulationMap.get(zipcode);
+		// population not found 
 		if (populationOfZip == 0) {
-			// population not found (or zipcode has no population)
+			
+			return 0;
+		}
+		
+		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
+		
+		if(propertiesForZip == null) {
 			return 0;
 		}
 		
 		int totalPropertyVal = 0;	// total property value of zipcode
-		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
+		
 		for (Property p : propertiesForZip) {
 			try {
+				String marketValue = p.getMarketValue();
+				
+				if(!p.validateString(p.getMarketValue())) {
+					continue;
+				}
+				
 				// add property value of this property to the total
 				int propertyVal = Integer.parseInt(p.getMarketValue());
 				totalPropertyVal = totalPropertyVal + propertyVal;

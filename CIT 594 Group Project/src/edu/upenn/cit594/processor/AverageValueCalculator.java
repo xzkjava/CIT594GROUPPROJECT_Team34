@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.upenn.cit594.data.Property;
 
-public class AverageValueCalculator extends PropertyCalculator{
+public class AverageValueCalculator implements PropertyCalculator{
 
 	@Override
 	public int calculateDataPerProperty(List<Property> properties) {
@@ -21,7 +21,7 @@ public class AverageValueCalculator extends PropertyCalculator{
 		
 		for (Property p: properties) {
 			
-			if (!validateString(p.getMarketValue())) {
+			if (!p.validateString(p.getMarketValue())) {
 				continue;
 			}
 			try {
@@ -37,6 +37,9 @@ public class AverageValueCalculator extends PropertyCalculator{
 			
 		}
 		
+		if(count == 0) {
+			return 0;
+		}
 		// TO-DO: need to truncate not round this value
 		return (int) totalPrice / count;	
 	}

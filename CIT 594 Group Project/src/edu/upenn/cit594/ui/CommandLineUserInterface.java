@@ -1,12 +1,12 @@
 package edu.upenn.cit594.ui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.Map.Entry;
 
-import edu.upenn.cit594.data.ParkingViolation;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.CSVProcessor;
 import edu.upenn.cit594.processor.JSONProcessor;
@@ -15,7 +15,8 @@ import edu.upenn.cit594.processor.Processor;
 public class CommandLineUserInterface {
 	private Processor processor;
 	
-	private Scanner in;
+	//private Scanner in;
+	private BufferedReader in;
 	
 	private Logger logger;
 	
@@ -24,7 +25,8 @@ public class CommandLineUserInterface {
 		
 		processor = createProcessor (parkingFileType, parkingFileName,propertyFileName, populationFileName, logger);
 		
-		in = new Scanner(System.in);
+		//in = new Scanner(System.in);
+		in = new BufferedReader(new InputStreamReader(System.in));
 		
 		this.logger = logger;
 
@@ -33,42 +35,47 @@ public class CommandLineUserInterface {
 	
 	public void respondToUserInput() {
 		
-		String input;
+		String input = "";
 		
 		displayPrompts();
 		
-		while(in.hasNextLine()) {
-			input = in.nextLine();
-			if(input.isEmpty()) {
-				System.out.println("ERROR: The choice typed in is an empty string. Please enter a choice.");
+		try {
+			while((input = in.readLine()) != null) {
 				
-			}
-			else if (!isUserInputAllDigits(input)) {
-				System.out.println("ERROR: The choice should be numbers only");
-				System.exit(1);
-			}
-			else {
-				try{
-					int typedChoice = Integer.parseInt(input);
+				if(input.isEmpty()) {
+					System.out.println("ERROR: The choice typed in is an empty string. Please enter a choice.");
+					System.exit(1);
+				}
+				else if (!isUserInputAllDigits(input)) {
+					System.out.println("ERROR: The choice should be numbers only");
+					System.exit(1);
+				}
+				else {
+					try{
+						int typedChoice = Integer.parseInt(input);
+						
+						if(typedChoice < 0 || typedChoice > 6) {
+							System.out.println("ERROR: the choice should be between 0 and 6, inclusive");
+							System.exit(1);
+						}
+						//needs to ask instructor if an invalid choice needs to be logged.
+						logger.log(String.valueOf(System.currentTimeMillis()) + " User selected Choice:" + typedChoice + "\n");
 					
-					if(typedChoice < 0 || typedChoice > 6) {
-						System.out.println("ERROR: the choice should be between 0 and 6, inclusive");
-						System.exit(1);
-					}
-					//needs to ask instructor if an invalid choice needs to be logged.
-					logger.log(String.valueOf(System.currentTimeMillis()) + " User selected Choice:" + typedChoice);
-				
-					processUserCommand(typedChoice);
-				
-				}catch(NumberFormatException e) {
-					e.printStackTrace();
-				}		
+						processUserCommand(typedChoice);
+					
+					}catch(NumberFormatException e) {
+						e.printStackTrace();
+					}		
+					
+				}
 				
 			}
-			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
-		in.close();
+		
 	}
 	
 	public Processor createProcessor(String parkingFileType, String parkingFileName, String propertyFileName, String populationFileName, Logger logger) {
@@ -110,6 +117,7 @@ public class CommandLineUserInterface {
 		
 		switch(choice) {
 			case 0:
+				System.out.println("0 has been entered. Program terminated.");
 				System.exit(0);
 			case 1:
 				int totalPopulation = processor.calculateTotalPopulation();
@@ -148,17 +156,28 @@ public class CommandLineUserInterface {
 	}
 	
 	public String askForZipCode() {
-		System.out.println("Please enter a valid ZIP Code:");
+		System.out.println("Please enter a ZIP Code:");
 		String zipcode = "";
-		while(in.hasNext()) {
-			zipcode = in.next();
-			if(processor.validateZipcode(zipcode)) {
-				break;
+		boolean keepAsking = true;
+		
+		do{
+			try{
+				zipcode = in.readLine();
+				if(zipcode != null) {
+					if(!isUserInputAllDigits(zipcode)) {
+						System.out.println("ERROR: the zipcode entered should be all digits.\nPlease enter a zipcode.");
+						
+					}
+					else {
+						keepAsking = false;
+					}
+			    }
+			}catch(IOException e) {
+				e.printStackTrace();
 			}
 			
-			System.out.println("ERROR: The zip code entered is not valid.\nPlease enter a valid ZIP Code:");
-		}
-		
+		}while(keepAsking);
+			
 		//need to ask instructor if the invalid zipcode needs to be logged.
 		logger.log(String.valueOf(System.currentTimeMillis()) + " User selected ZIP Code:" + zipcode);
 		
