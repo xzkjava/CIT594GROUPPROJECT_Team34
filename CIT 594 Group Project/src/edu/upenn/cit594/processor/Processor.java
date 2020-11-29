@@ -22,11 +22,16 @@ public abstract class Processor {
 	
 	private PopulationReader populationReader;
 	
-	private HashMap<String, List<ParkingViolation>> zipViolationMap = new HashMap<>();
+	protected HashMap<String, List<ParkingViolation>> zipViolationMap = new HashMap<>();
 	
-	private HashMap<String, Integer> zipPopulationMap= new HashMap<>();
+	protected HashMap<String, Integer> zipPopulationMap= new HashMap<>();
 	
-	private HashMap<String, List<Property>> zipPropertyMap = new HashMap<>();
+	protected HashMap<String, List<Property>> zipPropertyMap = new HashMap<>();
+	
+	// to save memoized values
+	private HashMap<String, Integer> liveableAreaPerProperty = new HashMap<>();
+	private HashMap<String, Integer> marketValPerProperty = new HashMap<>();
+	private HashMap<String, Integer> marketValPerCapita = new HashMap<>();
 	
 	public Processor (String parkingFileType, String parkingFileName, String propertyFileName, String populationFileName, Logger logger) {
 		
@@ -69,7 +74,7 @@ public abstract class Processor {
 	
 	// when user types 2, run this method
 	//need to modify this return type
-	public SortedMap<String, Double> calculateFinePerCapita() {
+	public SortedMap<String, Double> finePerCapitaCalculator() {
 		
 		if (zipViolationMap.size() < 1) {
 			return null;
@@ -124,7 +129,20 @@ public abstract class Processor {
 	}
 	
 	// when user types 3, run this method
+	
 	public int calculateMarketValuePerProperty(String zipcode) {
+		if (marketValPerProperty.containsKey(zipcode)) {
+			// value already calculated previously
+			return marketValPerProperty.get(zipcode);
+		}
+		
+		// otherwise calculate value, add it to saved values, and return its value
+		int marketVal = marketValuePerPropertyHelper(zipcode);
+		marketValPerProperty.put(zipcode, marketVal);
+		return marketVal;
+	}
+	
+	private int marketValuePerPropertyHelper(String zipcode) {
 		
 		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
 		if(propertiesForZip == null) {
@@ -136,6 +154,20 @@ public abstract class Processor {
 	
 	// when user types 4, run this method
 	public int calculateLivableAreaPerProperty(String zipcode) {
+		if (liveableAreaPerProperty.containsKey(zipcode)) {
+			// value already calculated previously
+			return liveableAreaPerProperty.get(zipcode);
+		}
+		
+		// otherwise calculate value, add it to saved values, and return its value
+		int liveableArea = liveableAreaPerPropertyHelper(zipcode);
+		liveableAreaPerProperty.put(zipcode, liveableArea);
+		return liveableArea;
+		
+	}
+	
+	
+	private int liveableAreaPerPropertyHelper(String zipcode) {
 		
 		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
 		if (propertiesForZip == null) {
@@ -147,6 +179,18 @@ public abstract class Processor {
 	
 	// when user types 5, run this method
 	public int calculateMarketValuePerCapita(String zipcode) {
+		if (marketValPerCapita.containsKey(zipcode)) {
+			// value already calculated previously
+			return marketValPerCapita.get(zipcode);
+		}
+		
+		// otherwise calculate value, add it to saved values, and return its value
+		int marketVal = marketValuePerCapitaHelper(zipcode);
+		marketValPerCapita.put(zipcode, marketVal);
+		return marketVal;
+	}
+	
+	private int marketValuePerCapitaHelper(String zipcode) {
 		// zipcode is not in the population file
 		if(!validateZipcode(zipcode)) {
 			return 0;

@@ -16,8 +16,8 @@ public class AverageValueCalculator implements PropertyCalculator{
 			return 0;			// no properties, return 0
 		}
 		
-		int count = 0; 			// number of properties in this zip code
-		long totalPrice = 0; 	// total price of houses in this zip code
+		int count = 0; 			// number of properties in this zipcode
+		long totalPrice = 0; 	// total price of houses in this zipcode
 		
 		for (Property p: properties) {
 			
