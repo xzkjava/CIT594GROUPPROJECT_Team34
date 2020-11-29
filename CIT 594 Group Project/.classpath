@@ -6,7 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Xiaoxin/Downloads/g7kuuvShTwy5Lrr0oW8MHQ_97c79b0d3e4a4c4b9cb784d434e9a225_json-simple-1.1.1.zip"/>
 	<classpathentry kind="lib" path="C:/Users/Jon/Documents/CIT 594/m11pa/json-simple-1.1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>

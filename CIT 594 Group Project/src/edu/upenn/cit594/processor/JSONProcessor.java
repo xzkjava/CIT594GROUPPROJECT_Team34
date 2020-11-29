@@ -14,7 +14,7 @@ public class JSONProcessor extends Processor{
 	}
 
 	@Override
-	public ParkingViolationReader createReader(String parkingFileName, Logger logger) {
+	public ParkingViolationReader createParkingReader(String parkingFileName, Logger logger) {
 		
 		return new ParkingJSONReader(parkingFileName, logger);
 	}

@@ -15,7 +15,7 @@ public class CSVProcessor extends Processor{
 
 
 	@Override
-	public ParkingViolationReader createReader(String parkingFileName, Logger logger) {
+	public ParkingViolationReader createParkingReader(String parkingFileName, Logger logger) {
 		
 		return new ParkingCSVReader(parkingFileName, logger);
 	}
