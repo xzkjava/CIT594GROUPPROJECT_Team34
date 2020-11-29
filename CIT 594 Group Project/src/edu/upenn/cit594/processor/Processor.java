@@ -22,11 +22,11 @@ public abstract class Processor {
 	
 	private PopulationReader populationReader;
 	
-	protected HashMap<String, List<ParkingViolation>> zipViolationMap = new HashMap<>();
+	private HashMap<String, List<ParkingViolation>> zipViolationMap = new HashMap<>();
 	
-	protected HashMap<String, Integer> zipPopulationMap= new HashMap<>();
+	private HashMap<String, Integer> zipPopulationMap= new HashMap<>();
 	
-	protected HashMap<String, List<Property>> zipPropertyMap = new HashMap<>();
+	private HashMap<String, List<Property>> zipPropertyMap = new HashMap<>();
 	
 	// to save memoized values
 	private HashMap<String, Integer> liveableAreaPerProperty = new HashMap<>();
@@ -74,7 +74,7 @@ public abstract class Processor {
 	
 	// when user types 2, run this method
 	//need to modify this return type
-	public SortedMap<String, Double> finePerCapitaCalculator() {
+	public SortedMap<String, Double> calculateFinePerCapita() {
 		
 		if (zipViolationMap.size() < 1) {
 			return null;
@@ -160,14 +160,14 @@ public abstract class Processor {
 		}
 		
 		// otherwise calculate value, add it to saved values, and return its value
-		int liveableArea = liveableAreaPerPropertyHelper(zipcode);
+		int liveableArea = computeLiveableAreaPerProperty(zipcode);
 		liveableAreaPerProperty.put(zipcode, liveableArea);
 		return liveableArea;
 		
 	}
 	
 	
-	private int liveableAreaPerPropertyHelper(String zipcode) {
+	private int computeLiveableAreaPerProperty(String zipcode) {
 		
 		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
 		if (propertiesForZip == null) {
@@ -185,14 +185,14 @@ public abstract class Processor {
 		}
 		
 		// otherwise calculate value, add it to saved values, and return its value
-		int marketVal = marketValuePerCapitaHelper(zipcode);
+		int marketVal = computeMarketValuePerCapita(zipcode);
 		marketValPerCapita.put(zipcode, marketVal);
 		return marketVal;
 	}
 	
-	private int marketValuePerCapitaHelper(String zipcode) {
+	private int computeMarketValuePerCapita(String zipcode) {
 		// zipcode is not in the population file
-		if(!validateZipcode(zipcode)) {
+		if(!zipPopulationMap.containsKey(zipcode)) {
 			return 0;
 		}
 		
@@ -238,16 +238,6 @@ public abstract class Processor {
 		
 		return cal.calculateDataPerProperty(properties);
 	
-	}
-	
-	//This method is called in askForZipcode()
-	public boolean validateZipcode(String zipcode) {
-			
-		if(zipPopulationMap.containsKey(zipcode)) {
-			return true;
-		}		
-			
-		return false;	
 	}
 	
 

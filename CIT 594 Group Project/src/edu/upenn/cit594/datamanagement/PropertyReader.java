@@ -20,7 +20,6 @@ public class PropertyReader {
 	public PropertyReader(String fileName, Logger logger) {
 		
 		try {
-			//File file = new File("C:/users/Xiaoxin/git/repository/CIT594GroupProject/CIT 594 Group Project/src/" + fileName);
 			
 			buffReader = new BufferedReader(new FileReader(fileName));
 			
