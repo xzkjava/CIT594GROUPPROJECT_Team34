@@ -179,7 +179,7 @@ public class CommandLineUserInterface {
 		}while(keepAsking);
 			
 		//need to ask instructor if the invalid zipcode needs to be logged.
-		logger.log(String.valueOf(System.currentTimeMillis()) + " User selected ZIP Code:" + zipcode);
+		logger.log(String.valueOf(System.currentTimeMillis()) + " User selected ZIP Code:" + zipcode + "\n");
 		
 		return zipcode;
 		
