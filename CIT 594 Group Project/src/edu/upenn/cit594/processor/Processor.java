@@ -27,10 +27,17 @@ public abstract class Processor {
 	
 	private HashMap<String, List<Property>> zipPropertyMap = new HashMap<>();
 	
+	
 	// to save memoized values
-	private HashMap<String, Integer> AreaPerProperty = new HashMap<>();
-	private HashMap<String, Integer> marketValPerProperty = new HashMap<>();
-	private HashMap<String, Integer> marketValPerCapita = new HashMap<>();
+	private int totalPopulation;
+	
+	private SortedMap<String, Double> finesPerCapita;
+	
+	private HashMap<String, Integer> areaPerProperty;
+	
+	private HashMap<String, Integer> marketValPerProperty;
+	
+	private HashMap<String, Integer> marketValPerCapita;
 	
 	public Processor (String parkingFileType, String parkingFileName, String propertyFileName, String populationFileName) {
 		
@@ -45,12 +52,34 @@ public abstract class Processor {
 		zipPopulationMap = populationReader.parsePopulation();
 		
 		zipPropertyMap = propertyReader.parseProperties();
+		
+		// initialize containers to save memoized values
+		finesPerCapita = new TreeMap<>();
+		
+		areaPerProperty = new HashMap<>();
+		
+		marketValPerProperty = new HashMap<>();
+		
+		marketValPerCapita = new HashMap<>();
+		
+		totalPopulation = -1;
 	}
 	
 	public abstract ParkingViolationReader createParkingReader(String parkingFilename);
 	
 	//when user types 1, run this method
 	public int calculatePopulation() {
+		if (totalPopulation == -1) {
+			// value already calculated previously
+			totalPopulation = computePopulation();
+		}
+
+				
+		// otherwise calculate value, add it to saved values, and return its value
+		return totalPopulation;
+	}
+	
+	private int computePopulation() {
 		
 		if (zipPopulationMap.size() < 1) {
 			// check for empty set
@@ -72,8 +101,19 @@ public abstract class Processor {
 	}
 	
 	// when user types 2, run this method
-	//need to modify this return type
 	public SortedMap<String, Double> calculateFinePerCapita() {
+		if (finesPerCapita == null) {
+			// value already calculated previously
+			finesPerCapita = computeFinePerCapita();
+		}
+
+				
+		// otherwise calculate value, add it to saved values, and return its value
+		return finesPerCapita;
+	}
+	
+	// helper function to compute fines per capita (only needs to run once)
+	private SortedMap<String, Double> computeFinePerCapita() {
 		
 		if (zipViolationMap.size() < 1) {
 			return null;
@@ -153,14 +193,14 @@ public abstract class Processor {
 	
 	// when user types 4, run this method
 	public int calculateAreaPerProperty(String zipcode) {
-		if (AreaPerProperty.containsKey(zipcode)) {
+		if (areaPerProperty.containsKey(zipcode)) {
 			// value already calculated previously
-			return AreaPerProperty.get(zipcode);
+			return areaPerProperty.get(zipcode);
 		}
 		
 		// otherwise calculate value, add it to saved values, and return its value
 		int liveableArea = computeAreaPerProperty(zipcode);
-		AreaPerProperty.put(zipcode, liveableArea);
+		areaPerProperty.put(zipcode, liveableArea);
 		return liveableArea;
 		
 	}
