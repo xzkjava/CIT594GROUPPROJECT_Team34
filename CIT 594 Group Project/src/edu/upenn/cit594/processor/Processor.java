@@ -12,7 +12,6 @@ import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.datamanagement.ParkingViolationReader;
 import edu.upenn.cit594.datamanagement.PopulationReader;
 import edu.upenn.cit594.datamanagement.PropertyReader;
-import edu.upenn.cit594.logging.Logger;
 
 public abstract class Processor {
 	
@@ -215,12 +214,12 @@ public abstract class Processor {
 			try {
 				String marketValue = p.getMarketValue();
 				
-				if(!p.validateString(p.getMarketValue())) {
+				if(!p.validateString(marketValue)) {
 					continue;
 				}
 				
 				// add property value of this property to the total
-				int propertyVal = Integer.parseInt(p.getMarketValue());
+				int propertyVal = Integer.parseInt(marketValue);
 				totalPropertyVal = totalPropertyVal + propertyVal;
 			
 			} catch(NumberFormatException e) {

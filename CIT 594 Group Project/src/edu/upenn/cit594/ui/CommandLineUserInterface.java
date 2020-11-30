@@ -3,6 +3,8 @@ package edu.upenn.cit594.ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.Map.Entry;
@@ -115,9 +117,11 @@ public class CommandLineUserInterface {
 			case 2:
 				SortedMap<String, Double> finesPerZip = processor.calculateFinePerCapita();
 				Iterator<Entry<String, Double>> it = finesPerZip.entrySet().iterator();
+				DecimalFormat df = new DecimalFormat("0.0000");
+				df.setRoundingMode(RoundingMode.FLOOR);
 				while (it.hasNext()) {
 					Entry<String, Double> next = it.next();
-					System.out.println(next.getKey() + ": " + next.getValue());
+					System.out.println(next.getKey() + ": " + df.format(next.getValue()));
 				}
 				displayPrompts();
 				break;

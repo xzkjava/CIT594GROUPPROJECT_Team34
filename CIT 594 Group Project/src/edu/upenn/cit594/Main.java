@@ -1,7 +1,6 @@
 package edu.upenn.cit594;
 
 import java.io.File;
-import java.io.IOException;
 
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.Processor;
@@ -49,7 +48,7 @@ public class Main {
 	public static void verifyArguments(String[ ] args) {
 		
 		
-		if(args == null |args.length != 5) {
+		if(args == null ||args.length != 5) {
 			System.out.println("ERROR: The number of arguments passed to the main ( ) should be 5.");
 			System.exit(1);
 		}
