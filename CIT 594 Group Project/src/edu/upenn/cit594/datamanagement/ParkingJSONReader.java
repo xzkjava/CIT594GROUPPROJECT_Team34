@@ -16,8 +16,8 @@ import edu.upenn.cit594.logging.Logger;
 
 public class ParkingJSONReader extends ParkingViolationReader{
 
-	public ParkingJSONReader(String fileName, Logger logger) {
-		super(fileName, logger);
+	public ParkingJSONReader(String fileName) {
+		super(fileName);
 		
 	}
 

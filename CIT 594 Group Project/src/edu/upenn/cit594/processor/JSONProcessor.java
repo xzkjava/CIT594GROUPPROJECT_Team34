@@ -7,16 +7,16 @@ import edu.upenn.cit594.logging.Logger;
 public class JSONProcessor extends Processor{
 
 	public JSONProcessor(String parkingFileType, String parkingFileName, String propertyFileName,
-			String populationFileName, Logger logger) {
+			String populationFileName) {
 		
-		super(parkingFileType, parkingFileName, propertyFileName, populationFileName,logger);
+		super(parkingFileType, parkingFileName, propertyFileName, populationFileName);
 		
 	}
 
 	@Override
-	public ParkingViolationReader createParkingReader(String parkingFileName, Logger logger) {
+	public ParkingViolationReader createParkingReader(String parkingFileName) {
 		
-		return new ParkingJSONReader(parkingFileName, logger);
+		return new ParkingJSONReader(parkingFileName);
 	}
 
 

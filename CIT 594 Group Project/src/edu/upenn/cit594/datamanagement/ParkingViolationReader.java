@@ -13,14 +13,13 @@ import edu.upenn.cit594.logging.Logger;
 public abstract class ParkingViolationReader {
 	public FileReader fileReader;
 	
-	public ParkingViolationReader(String fileName, Logger logger) {	
-			
-			
-     	try {
-				//File file = new File("src" + File.separator + fileName);
-				
+	public ParkingViolationReader(String fileName) {	
+						
+     	try {		
 				fileReader = new FileReader(fileName);
 
+				Logger logger = Logger.getInstance();
+				
 				logger.log(String.valueOf(System.currentTimeMillis()) + " " + fileName + " is opened to read.\n");
 				
 		} catch (FileNotFoundException e) {

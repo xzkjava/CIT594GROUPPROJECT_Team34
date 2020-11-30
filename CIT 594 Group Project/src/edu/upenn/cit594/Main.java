@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import edu.upenn.cit594.logging.Logger;
+import edu.upenn.cit594.processor.Processor;
+import edu.upenn.cit594.processor.ProcessorFactory;
 import edu.upenn.cit594.ui.CommandLineUserInterface;
 
 public class Main {
@@ -19,10 +21,10 @@ public class Main {
 		
 		String propertyFileName = args[2];
 		
-		String populationFilename = args[3];
+		String populationFileName = args[3];
 		
 		String logFileName = args[4];
-		
+        
 		Logger.setFileName(logFileName);
 		
 		Logger logger = Logger.getInstance();
@@ -31,10 +33,12 @@ public class Main {
 				+ parkingFileType + " "
 				+ parkingFileName + " "
 				+ propertyFileName + " "
-				+ populationFilename + " "
+				+ populationFileName + " "
 				+ logFileName + "\n");
-		
-		CommandLineUserInterface userInterface = new CommandLineUserInterface(parkingFileType, parkingFileName, propertyFileName, populationFilename, logger);
+			
+		Processor processor = ProcessorFactory.createProcessor(parkingFileType, parkingFileName, propertyFileName, populationFileName);
+					
+		CommandLineUserInterface userInterface = new CommandLineUserInterface(processor);
 		
 		userInterface.respondToUserInput();
 		
@@ -61,7 +65,7 @@ public class Main {
 		String logFileName = args[4];
 		
 		if(!type.equals("csv") && !type.equals("json")) {
-			System.out.println("ERROR: The second argument should be 'csv' or 'json'.");
+			System.out.println("ERROR: The first argument should be 'csv' or 'json'.");
 			System.exit(1);
 		}
 		else if(parkingFileName != null && !parkingFileName.isEmpty()) {

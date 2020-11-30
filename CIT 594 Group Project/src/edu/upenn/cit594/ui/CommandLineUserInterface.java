@@ -11,24 +11,23 @@ import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.CSVProcessor;
 import edu.upenn.cit594.processor.JSONProcessor;
 import edu.upenn.cit594.processor.Processor;
+import edu.upenn.cit594.processor.ProcessorFactory;
 
 public class CommandLineUserInterface {
 	private Processor processor;
 	
-	//private Scanner in;
 	private BufferedReader in;
 	
 	private Logger logger;
 	
 	
-	public CommandLineUserInterface(String parkingFileType, String parkingFileName, String propertyFileName, String populationFileName, Logger logger) {
+	public CommandLineUserInterface(Processor processor) {
 		
-		processor = createProcessor (parkingFileType, parkingFileName,propertyFileName, populationFileName, logger);
+		this.processor = processor;
 		
-		//in = new Scanner(System.in);
 		in = new BufferedReader(new InputStreamReader(System.in));
 		
-		this.logger = logger;
+		logger = Logger.getInstance();
 
 	}
 	
@@ -46,7 +45,7 @@ public class CommandLineUserInterface {
 					System.out.println("ERROR: The choice typed in is an empty string. Please enter a choice.");
 					System.exit(1);
 				}
-				else if (!isUserInputAllDigits(input)) {
+				else if (!isAllDigits(input)) {
 					System.out.println("ERROR: The choice should be numbers only");
 					System.exit(1);
 				}
@@ -78,17 +77,6 @@ public class CommandLineUserInterface {
 		
 	}
 	
-	public Processor createProcessor(String parkingFileType, String parkingFileName, String propertyFileName, String populationFileName, Logger logger) {
-		
-		if(parkingFileType.equals("csv")){
-			return new CSVProcessor(parkingFileType, parkingFileName, propertyFileName, populationFileName, logger);
-		}
-		else if(parkingFileType.equals("json")) {
-			return new JSONProcessor(parkingFileType, parkingFileName, propertyFileName, populationFileName, logger);
-		}
-		
-		return null;
-	}
 	
 	//need to add prompt 6
 	public void displayPrompts() {
@@ -100,7 +88,7 @@ public class CommandLineUserInterface {
 				+ "Enter 5 to show the total residential market value per capita for a specified ZIP Code.\n");
 	}
 	
-	public boolean isUserInputAllDigits(String input) {
+	public boolean isAllDigits(String input) {
 		
 		for(int i = 0; i < input.length(); i++) {
 			if(!Character.isDigit(input.charAt(0))) {
@@ -120,7 +108,7 @@ public class CommandLineUserInterface {
 				System.out.println("0 has been entered. Program terminated.");
 				System.exit(0);
 			case 1:
-				int totalPopulation = processor.calculateTotalPopulation();
+				int totalPopulation = processor.calculatePopulation();
 				System.out.println(totalPopulation) ;
 				displayPrompts();
 				break;
@@ -135,17 +123,17 @@ public class CommandLineUserInterface {
 				break;
 			case 3:
 				zipcode = askForZipCode();
-				System.out.println(processor.calculateMarketValuePerProperty(zipcode));
+				System.out.println(processor.calculateValuePerProperty(zipcode));
 				displayPrompts();
 				break;	
 			case 4:
 				zipcode = askForZipCode();
-				System.out.println(processor.calculateLivableAreaPerProperty(zipcode));
+				System.out.println(processor.calculateAreaPerProperty(zipcode));
 				displayPrompts();
 				break;
 			case 5:
 				zipcode = askForZipCode();
-				System.out.println(processor.calculateMarketValuePerCapita(zipcode));
+				System.out.println(processor.calculateValuePerCapita(zipcode));
 				displayPrompts();
 				break;
 			case 6:
@@ -164,7 +152,7 @@ public class CommandLineUserInterface {
 			try{
 				zipcode = in.readLine();
 				if(zipcode != null) {
-					if(!isUserInputAllDigits(zipcode)) {
+					if(!isAllDigits(zipcode)) {
 						System.out.println("ERROR: the zipcode entered should be all digits.\nPlease enter a zipcode.");
 						
 					}

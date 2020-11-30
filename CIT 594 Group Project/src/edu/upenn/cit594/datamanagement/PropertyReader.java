@@ -1,7 +1,6 @@
 package edu.upenn.cit594.datamanagement;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -17,11 +16,13 @@ import edu.upenn.cit594.logging.Logger;
 public class PropertyReader {
 	private BufferedReader buffReader;
 	
-	public PropertyReader(String fileName, Logger logger) {
+	public PropertyReader(String fileName) {
 		
 		try {
 			
 			buffReader = new BufferedReader(new FileReader(fileName));
+			
+			Logger logger = Logger.getInstance();
 			
 			logger.log(String.valueOf(System.currentTimeMillis()) + " " + fileName + " is opened to read.\n");
 		

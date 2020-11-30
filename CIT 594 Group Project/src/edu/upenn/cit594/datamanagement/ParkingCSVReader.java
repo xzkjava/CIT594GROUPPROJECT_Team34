@@ -12,9 +12,9 @@ import edu.upenn.cit594.logging.Logger;
 public class ParkingCSVReader extends ParkingViolationReader {
 	private BufferedReader buffReader;
 	
-	public ParkingCSVReader(String fileName, Logger logger) {
+	public ParkingCSVReader(String fileName) {
 		
-		super(fileName, logger);
+		super(fileName);
 		
 		buffReader = new BufferedReader(fileReader);
 		

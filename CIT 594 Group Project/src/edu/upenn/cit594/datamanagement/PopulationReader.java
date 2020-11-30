@@ -11,7 +11,7 @@ import edu.upenn.cit594.logging.Logger;
 public class PopulationReader {
 	private BufferedReader buffReader;
 	
-	public PopulationReader(String fileName, Logger logger) {
+	public PopulationReader(String fileName) {
 		
 		try {
 				
@@ -19,6 +19,8 @@ public class PopulationReader {
 			
 			buffReader = new BufferedReader (new FileReader(fileName));
 		
+			Logger logger = Logger.getInstance();
+			
 			logger.log(String.valueOf(System.currentTimeMillis()) + " " + fileName + " is opened to read.\n");
 		}
 		catch(FileNotFoundException e) {
