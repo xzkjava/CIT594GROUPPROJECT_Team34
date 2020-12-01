@@ -13,7 +13,6 @@ import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.CSVProcessor;
 import edu.upenn.cit594.processor.JSONProcessor;
 import edu.upenn.cit594.processor.Processor;
-import edu.upenn.cit594.processor.ProcessorFactory;
 
 public class CommandLineUserInterface {
 	private Processor processor;

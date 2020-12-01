@@ -4,7 +4,6 @@ import java.io.File;
 
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.Processor;
-import edu.upenn.cit594.processor.ProcessorFactory;
 import edu.upenn.cit594.ui.CommandLineUserInterface;
 
 public class Main {
@@ -35,7 +34,7 @@ public class Main {
 				+ populationFileName + " "
 				+ logFileName + "\n");
 			
-		Processor processor = ProcessorFactory.createProcessor(parkingFileType, parkingFileName, propertyFileName, populationFileName);
+		Processor processor = Processor.createProcessor(parkingFileType, parkingFileName, propertyFileName, populationFileName);
 					
 		CommandLineUserInterface userInterface = new CommandLineUserInterface(processor);
 		
