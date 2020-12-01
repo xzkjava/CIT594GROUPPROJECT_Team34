@@ -86,7 +86,8 @@ public class CommandLineUserInterface {
 				+ "Enter 2 to show the total fines per capita for each ZIP Code.\n"
 				+ "Enter 3 to show the average market value for residences in a specified ZIP Code.\n"
 				+ "Enter 4 to show the total average livable area for residences in a specified ZIP Code.\n"
-				+ "Enter 5 to show the total residential market value per capita for a specified ZIP Code.\n");
+				+ "Enter 5 to show the total residential market value per capita for a specified ZIP Code.\n"
+				+ "Enter 6 to show the ratings of all ZIP Codes based on the normalized averages of available data.\n");
 	}
 	
 	public boolean isAllDigits(String input) {
@@ -140,7 +141,12 @@ public class CommandLineUserInterface {
 				displayPrompts();
 				break;
 			case 6:
-				//TODO
+				SortedMap<String, Integer> rankings = processor.rateZipCodes();
+				Iterator<Entry<String, Integer>> it2 = rankings.entrySet().iterator();
+				while (it2.hasNext()) {
+					Entry<String, Integer> next = it2.next();
+					System.out.println(next.getKey() + ": " + next.getValue());
+				}
 				displayPrompts();
 				break;
 		}
