@@ -1,6 +1,5 @@
 package edu.upenn.cit594.processor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -315,34 +314,34 @@ public abstract class Processor {
 	
 	private TreeMap<String, Integer> normalizeRatings() {
 		// error check for empty values first
-		if (zipViolationMap.equals(null) || zipViolationMap.size() < 1) {
+		if (zipViolationMap == null || zipViolationMap.size() < 1) {
 			return null;
 		}
 		
-		if (zipPropertyMap.equals(null) || zipPropertyMap.size() < 1) {
+		if (zipPropertyMap == null || zipPropertyMap.size() < 1) {
 			return null;
 		}
 		
-		if (zipPopulationMap.equals(null) || zipPopulationMap.size() < 1) {
+		if (zipPopulationMap == null || zipPopulationMap.size() < 1) {
 			return null;
 		}
 		
 		HashSet<String> mutualKeys = getMutualKeys(zipPropertyMap.keySet(), zipPropertyMap.keySet());
 		mutualKeys = getMutualKeys(mutualKeys, zipViolationMap.keySet());
 		
-		if (normalizedFine.equals(null)) {
+		if (normalizedFine == null) {
 			normalizedFine = normalizeFines(mutualKeys);
 		}
 		
-		if (normalizedLiveableArea.equals(null)) {
+		if (normalizedLiveableArea == null) {
 			normalizedLiveableArea = normalizeLiveableArea(mutualKeys);
 		}
 		
-		if (normalizedPropertyValues.equals(null)) {
+		if (normalizedPropertyValues == null) {
 			normalizedPropertyValues = normalizePropertyValues(mutualKeys);
 		}
 		
-		if (normalizedPopulation.equals(null)) {
+		if (normalizedPopulation == null) {
 			normalizedPopulation = normalizePopulation(mutualKeys);
 		}
 		
@@ -392,7 +391,7 @@ public abstract class Processor {
 		double minFine = Double.MAX_VALUE;
 		double maxFine = Double.MIN_VALUE;
 		
-		TreeMap<String, Double> normalizedFine = new TreeMap<String, Double>();
+		TreeMap<String, Double> averageFine = new TreeMap<String, Double>();
 		
 		Iterator<Entry<String, List<ParkingViolation>>> it = zipViolationMap.entrySet().iterator();
 		while (it.hasNext()) {
@@ -426,29 +425,28 @@ public abstract class Processor {
 				
 			}
 			
-			double averageFine = totalFine / count;
+			double avgFine = totalFine / count;
 			
-			minFine = Math.min(minFine, averageFine);
-			maxFine = Math.max(maxFine, averageFine);
+			minFine = Math.min(minFine, avgFine);
+			maxFine = Math.max(maxFine, avgFine);
 			
-			normalizedFine.put(currentZip, averageFine);
+		averageFine.put(currentZip, avgFine);
 			
 		}
 		
 		// second pass (on valid values), normalize the averages based on minimum and maximum
-		Iterator<Entry<String, Double>> it2 = normalizedFine.entrySet().iterator();
+		TreeMap<String, Double> normalizedFine = new TreeMap<String, Double>();
+		
+		Iterator<Entry<String, Double>> it2 = averageFine.entrySet().iterator();
 		while (it2.hasNext()) {
 		
 			Entry<String, Double> next = it2.next();
 			
 			String currentZip = next.getKey();
-			double averageFine = next.getValue();
-			
-			// remove the key-average pairing (and replace with key-normalized average pairing)
-			normalizedFine.remove(currentZip);
+			double avgFine = next.getValue();
 			
 			// normalize fines (note that less fines are better)
-			double normalizedFineCurrent = 1 - (averageFine - minFine) / (maxFine - minFine) ;
+			double normalizedFineCurrent = 1 - (avgFine - minFine) / (maxFine - minFine) ;
 			normalizedFine.put(currentZip, normalizedFineCurrent);
 			
 			
@@ -464,7 +462,7 @@ public abstract class Processor {
 		double minArea = Double.MAX_VALUE;
 		double maxArea= Double.MIN_VALUE;
 		
-		TreeMap<String, Double> normalizedLiveableArea = new TreeMap<String, Double>();
+		TreeMap<String, Double> averageLiveableArea = new TreeMap<String, Double>();
 		
 		Iterator<Entry<String, List<Property>>> it = zipPropertyMap.entrySet().iterator();
 		while (it.hasNext()) {
@@ -508,12 +506,14 @@ public abstract class Processor {
 			minArea = Math.min(minArea, averageArea);
 			maxArea = Math.max(maxArea, averageArea);
 			
-			normalizedLiveableArea.put(currentZip, averageArea);
+			averageLiveableArea.put(currentZip, averageArea);
 			
 		}
 		
+		TreeMap<String, Double> normalizedLiveableArea = new TreeMap<String, Double>();
+		
 		// second pass (on valid values), normalize the averages based on minimum and maximum
-		Iterator<Entry<String, Double>> it2 = normalizedLiveableArea.entrySet().iterator();
+		Iterator<Entry<String, Double>> it2 = averageLiveableArea.entrySet().iterator();
 		while (it2.hasNext()) {
 		
 			Entry<String, Double> next = it2.next();
@@ -521,8 +521,6 @@ public abstract class Processor {
 			String currentZip = next.getKey();
 			double averageArea = next.getValue();
 			
-			// remove the key-average pairing (and replace with key-normalized average pairing)
-			normalizedLiveableArea.remove(currentZip);
 			
 			double normalizedPropertyValue = (averageArea - minArea) / (maxArea - minArea) ;
 			normalizedLiveableArea.put(currentZip, normalizedPropertyValue);
@@ -584,7 +582,7 @@ public abstract class Processor {
 		double minPropertyValue = Double.MAX_VALUE;
 		double maxPropertyValue = Double.MIN_VALUE;
 		
-		TreeMap<String, Double> normalizedPropertyValues = new TreeMap<String, Double>();
+		TreeMap<String, Double> averagePropertyValues = new TreeMap<String, Double>();
 		
 		Iterator<Entry<String, List<Property>>> it = zipPropertyMap.entrySet().iterator();
 		while (it.hasNext()) {
@@ -628,12 +626,14 @@ public abstract class Processor {
 			minPropertyValue = Math.min(minPropertyValue, averagePropertyValue);
 			maxPropertyValue = Math.max(maxPropertyValue, averagePropertyValue);
 			
-			normalizedPropertyValues.put(currentZip, averagePropertyValue);
+			averagePropertyValues.put(currentZip, averagePropertyValue);
 			
 		}
 		
+		
+		TreeMap<String, Double> normalizedPropertyValues = new TreeMap<String, Double>();
 		// second pass (on valid values), normalize the averages based on minimum and maximum
-		Iterator<Entry<String, Double>> it2 = normalizedPropertyValues.entrySet().iterator();
+		Iterator<Entry<String, Double>> it2 = averagePropertyValues.entrySet().iterator();
 		while (it2.hasNext()) {
 		
 			Entry<String, Double> next = it2.next();
@@ -660,5 +660,4 @@ public abstract class Processor {
 	
 	}
 	
-
 }
