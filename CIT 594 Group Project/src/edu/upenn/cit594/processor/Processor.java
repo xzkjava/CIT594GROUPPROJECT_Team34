@@ -300,12 +300,13 @@ public abstract class Processor {
 	}
 	
 	// when user types in 6, return the normalized rankings of each neighborhood
-	// these are calculated by calculating the normalized property value, fine amount, and ranking
-	// which are all between 0 and 1 (the fine amount is 1 - the normalized value) since more fines is
-	// less desirable. the results are averaged and converted to an integer out of 100.
+	// These are calculated by calculating the normalized property value, livable area, fine amount, and
+	// population resulting in a value between 0 and 1 (the fine amount is 1 - the normalized value 
+	// since more fines is less desirable. the results are averaged and converted to an integer out of 100.
 	
 	public SortedMap<String, Integer> rateZipCodes() {
 		if (normalizedRatings.equals(null)) {
+			// value already exists, print this out
 			normalizedRatings = normalizeRatings();
 		}
 		
