@@ -304,7 +304,7 @@ public abstract class Processor {
 	// since more fines is less desirable. the results are averaged and converted to an integer out of 100.
 	
 	public SortedMap<String, Integer> rateZipCodes() {
-		if (normalizedRatings.equals(null)) {
+		if (normalizedRatings == null) {
 			// value already exists, print this out
 			normalizedRatings = normalizeRatings();
 		}
@@ -446,7 +446,7 @@ public abstract class Processor {
 			double avgFine = next.getValue();
 			
 			// normalize fines (note that less fines are better)
-			double normalizedFineCurrent = 1 - (avgFine - minFine) / (maxFine - minFine) ;
+			double normalizedFineCurrent = 1 - ((double)(avgFine - minFine)) / (maxFine - minFine) ;
 			normalizedFine.put(currentZip, normalizedFineCurrent);
 			
 			
@@ -522,7 +522,7 @@ public abstract class Processor {
 			double averageArea = next.getValue();
 			
 			
-			double normalizedPropertyValue = (averageArea - minArea) / (maxArea - minArea) ;
+			double normalizedPropertyValue = ((double)(averageArea - minArea)) / (maxArea - minArea) ;
 			normalizedLiveableArea.put(currentZip, normalizedPropertyValue);
 			
 			
@@ -566,8 +566,8 @@ public abstract class Processor {
 			String currentZip = next.getKey();	
 			int currentPopulation = next.getValue();
 			
-			double normalizedCurrentPopulation = (currentPopulation - minPopulation) / (maxPopulation - minPopulation) ;
-			normalizedPropertyValues.put(currentZip, normalizedCurrentPopulation);
+			double normalizedCurrentPopulation = ((double)(currentPopulation - minPopulation)) / (maxPopulation - minPopulation) ;
+			normalizedPopulation.put(currentZip, normalizedCurrentPopulation);
 			
 			
 		}
@@ -644,7 +644,7 @@ public abstract class Processor {
 			// remove the key-average pairing (and replace with key-normalized average pairing)
 			normalizedPropertyValues.remove(currentZip);
 			
-			double normalizedPropertyValue = (averagePropertyValue - minPropertyValue) / (maxPropertyValue - minPropertyValue) ;
+			double normalizedPropertyValue = ((double)(averagePropertyValue - minPropertyValue)) / (maxPropertyValue - minPropertyValue) ;
 			normalizedPropertyValues.put(currentZip, normalizedPropertyValue);
 			
 			
@@ -660,4 +660,5 @@ public abstract class Processor {
 	
 	}
 	
+
 }
