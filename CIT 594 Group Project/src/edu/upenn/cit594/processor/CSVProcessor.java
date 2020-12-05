@@ -6,10 +6,10 @@ import edu.upenn.cit594.logging.Logger;
 
 public class CSVProcessor extends Processor{
 
-	public CSVProcessor(String parkingFileType, String parkingFileName, String propertyFileName,
+	public CSVProcessor(String parkingFileName, String propertyFileName,
 			String populationFileName) {
 		
-		super(parkingFileType, parkingFileName, propertyFileName, populationFileName);
+		super(parkingFileName, propertyFileName, populationFileName);
 		
 	}
 

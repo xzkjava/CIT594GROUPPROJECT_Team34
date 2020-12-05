@@ -41,7 +41,9 @@ public class CommandLineUserInterface {
 		
 		try {
 			while((input = in.readLine()) != null) {
-				
+				//needs to ask instructor if an invalid choice needs to be logged.
+				logger.log(System.currentTimeMillis() + " User selected Choice:" + input + "\n");
+			
 				if(input.isEmpty()) {
 					System.out.println("ERROR: The choice typed in is an empty string. Please enter a choice.");
 					System.exit(1);
@@ -58,9 +60,7 @@ public class CommandLineUserInterface {
 							System.out.println("ERROR: the choice should be between 0 and 6, inclusive");
 							System.exit(1);
 						}
-						//needs to ask instructor if an invalid choice needs to be logged.
-						logger.log(String.valueOf(System.currentTimeMillis()) + " User selected Choice:" + typedChoice + "\n");
-					
+						
 						processUserCommand(typedChoice);
 					
 					}catch(NumberFormatException e) {
@@ -90,17 +90,17 @@ public class CommandLineUserInterface {
 				+ "Enter 6 to show the ratings of all ZIP Codes based on the normalized averages of available data.\n");
 	}
 	
-	public boolean isAllDigits(String input) {
-		
-		for(int i = 0; i < input.length(); i++) {
-			if(!Character.isDigit(input.charAt(0))) {
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
+//	public boolean isAllDigits(String input) {
+//		
+//		for(int i = 0; i < input.length(); i++) {
+//			if(!Character.isDigit(input.charAt(0))) {
+//				return false;
+//			}
+//		}
+//		
+//		return true;
+//	}
+//	
 	public void processUserCommand(int choice) {
 		
 		String zipcode = "";
@@ -161,6 +161,8 @@ public class CommandLineUserInterface {
 			try{
 				zipcode = in.readLine();
 				if(zipcode != null) {
+					logger.log(System.currentTimeMillis() + " User typed ZIP Code: " + zipcode + "\n");
+					
 					if(!isAllDigits(zipcode)) {
 						System.out.println("ERROR: the zipcode entered should be all digits.\nPlease enter a zipcode.");
 						
@@ -174,12 +176,19 @@ public class CommandLineUserInterface {
 			}
 			
 		}while(keepAsking);
-			
-		//need to ask instructor if the invalid zipcode needs to be logged.
-		logger.log(String.valueOf(System.currentTimeMillis()) + " User selected ZIP Code:" + zipcode + "\n");
+
 		
 		return zipcode;
 		
+	}
+	
+	public boolean isAllDigits(String zip) {
+		
+		if(zip.contains("[^\\d]+")) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 	

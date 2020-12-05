@@ -6,10 +6,10 @@ import edu.upenn.cit594.logging.Logger;
 
 public class JSONProcessor extends Processor{
 
-	public JSONProcessor(String parkingFileType, String parkingFileName, String propertyFileName,
+	public JSONProcessor(String parkingFileName, String propertyFileName,
 			String populationFileName) {
 		
-		super(parkingFileType, parkingFileName, propertyFileName, populationFileName);
+		super(parkingFileName, propertyFileName, populationFileName);
 		
 	}
 

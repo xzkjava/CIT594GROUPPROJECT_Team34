@@ -23,11 +23,11 @@ public abstract class Processor {
 	
 	private PopulationReader populationReader;
 	
-	private HashMap<String, List<ParkingViolation>> zipViolationMap = new HashMap<>();
+	private HashMap<String, List<ParkingViolation>> zipViolationMap;
 	
-	private HashMap<String, Integer> zipPopulationMap= new HashMap<>();
+	private HashMap<String, Integer> zipPopulationMap;
 	
-	private HashMap<String, List<Property>> zipPropertyMap = new HashMap<>();
+	private HashMap<String, List<Property>> zipPropertyMap;
 	
 	
 	// to save memoized values
@@ -52,7 +52,7 @@ public abstract class Processor {
 	
 	private TreeMap<String, Integer> normalizedRatings;
 	
-	public Processor (String parkingFileType, String parkingFileName, String propertyFileName, String populationFileName) {
+	protected Processor (String parkingFileName, String propertyFileName, String populationFileName) {
 		
 		parkingReader = createParkingReader(parkingFileName);
 		
@@ -81,13 +81,10 @@ public abstract class Processor {
 	public static Processor createProcessor(String parkingFileType, String parkingFileName, String propertyFileName, String populationFileName) {
 		
 		if(parkingFileType.equals("csv")){
-			return new CSVProcessor(parkingFileType, parkingFileName, propertyFileName, populationFileName);
-		}
-		else if(parkingFileType.equals("json")){
-			return new JSONProcessor(parkingFileType, parkingFileName, propertyFileName, populationFileName);
+			return new CSVProcessor(parkingFileName, propertyFileName, populationFileName);
 		}
 		
-		return null;
+		return new JSONProcessor(parkingFileName, propertyFileName, populationFileName);		
 		
 	}
 	
