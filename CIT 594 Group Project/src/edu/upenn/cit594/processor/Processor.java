@@ -92,7 +92,7 @@ public abstract class Processor {
 	
 	//when user types 1, run this method
 	public int calculatePopulation() {
-		if (totalPopulation == -1) {
+		if (totalPopulation != -1) {
 			// value already calculated previously
 			totalPopulation = computePopulation();
 		}
@@ -104,7 +104,7 @@ public abstract class Processor {
 	
 	private int computePopulation() {
 		
-		if (zipPopulationMap.size() < 1) {
+		if (zipPopulationMap == null || zipPopulationMap.size() < 1) {
 			// check for empty set
 			return 0;
 		}
@@ -138,7 +138,7 @@ public abstract class Processor {
 	// helper function to compute fines per capita (only needs to run once)
 	private SortedMap<String, Double> computeFinePerCapita() {
 		
-		if (zipViolationMap.size() < 1) {
+		if (zipViolationMap == null || zipViolationMap.size() < 1) {
 			return null;
 		}
 		
@@ -206,6 +206,11 @@ public abstract class Processor {
 	
 	private int marketValuePerPropertyHelper(String zipcode) {
 		
+		if (zipPropertyMap == null || zipPropertyMap.size() < 1) {
+			return 0;
+		}
+		
+		
 		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
 		if(propertiesForZip == null) {
 			return 0;
@@ -216,6 +221,10 @@ public abstract class Processor {
 	
 	// when user types 4, run this method
 	public int calculateAreaPerProperty(String zipcode) {
+		if (areaPerProperty == null || areaPerProperty.size() < 1) {
+			return 0;
+		}
+		
 		if (areaPerProperty.containsKey(zipcode)) {
 			// value already calculated previously
 			return areaPerProperty.get(zipcode);
@@ -230,6 +239,9 @@ public abstract class Processor {
 	
 	
 	private int computeAreaPerProperty(String zipcode) {
+		if (zipPropertyMap == null || zipPropertyMap.size() < 1) {
+			return 0;
+		}
 		
 		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
 		if (propertiesForZip == null) {
@@ -241,6 +253,11 @@ public abstract class Processor {
 	
 	// when user types 5, run this method
 	public int calculateValuePerCapita(String zipcode) {
+		
+		if (marketValPerCapita == null || marketValPerCapita.size() < 1) {
+			return 0;
+		}
+		
 		if (marketValPerCapita.containsKey(zipcode)) {
 			// value already calculated previously
 			return marketValPerCapita.get(zipcode);
