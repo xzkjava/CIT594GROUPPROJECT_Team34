@@ -141,6 +141,7 @@ public class CommandLineUserInterface {
 				displayPrompts();
 				break;
 			case 6:
+				System.out.println("The following is the average of the normalized liveable area, population, property value, and value of parking violations in a given zipcode.");
 				SortedMap<String, Integer> rankings = processor.rateZipCodes();
 				Iterator<Entry<String, Integer>> it2 = rankings.entrySet().iterator();
 				while (it2.hasNext()) {
