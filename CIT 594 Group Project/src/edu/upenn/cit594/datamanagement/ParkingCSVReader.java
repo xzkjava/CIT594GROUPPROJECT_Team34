@@ -33,9 +33,13 @@ public class ParkingCSVReader extends ParkingViolationReader {
 				String[] wordsInLine = line.split(",", -1);
 				
 				int fine = 0;
+				String fineStr = wordsInLine[1];
 				
+				if(!fineStr.matches("^[+-]?\\d+$")) {
+					continue;
+				}
 				try {
-					fine = Integer.parseInt(wordsInLine[1]);
+					fine = Integer.parseInt(fineStr);
 				
 				} catch(NumberFormatException e) {
 					e.printStackTrace();

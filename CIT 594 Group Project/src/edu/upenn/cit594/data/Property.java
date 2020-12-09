@@ -23,17 +23,17 @@ public class Property {
 		return zipcode;
 	}
 	
-    public boolean validateString(String value) {
-	    	
-	    	if(value == null || value.isEmpty()) {
-	    		return false;
-	    	}
-	    	
-	    	if(value.matches("^[+-]?\\d+$")) {
-	    		return true;
-	    	}
-	    	
-	    	return false;
-		}
+//    public boolean validateString(String value) {
+//	    	
+//	    	if(value == null || value.isEmpty()) {
+//	    		return false;
+//	    	}
+//	    	
+//	    	if(value.matches("^[+-]?\\d+$")) {
+//	    		return true;
+//	    	}
+//	    	
+//	    	return false;
+//		}
 
 }

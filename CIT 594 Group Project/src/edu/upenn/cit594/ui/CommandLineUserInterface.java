@@ -48,7 +48,7 @@ public class CommandLineUserInterface {
 					System.out.println("ERROR: The choice typed in is an empty string. Please enter a choice.");
 					System.exit(1);
 				}
-				else if (!isAllDigits(input)) {
+				else if (!input.matches("^\\d+$")) {
 					System.out.println(input);
 					System.out.println("ERROR: The choice should be numbers only");
 					System.exit(1);
@@ -164,7 +164,7 @@ public class CommandLineUserInterface {
 				if(zipcode != null) {
 					logger.log(System.currentTimeMillis() + " User typed ZIP Code: " + zipcode + "\n");
 					
-					if(!isAllDigits(zipcode)) {
+					if(!zipcode.matches("^\\d+$")) {
 						System.out.println("ERROR: the zipcode entered should be all digits.\nPlease enter a zipcode.");
 						
 					}
@@ -183,14 +183,23 @@ public class CommandLineUserInterface {
 		
 	}
 	
-	public boolean isAllDigits(String zip) {
-		for(int i = 0; i < zip.length(); i++) {
-			if(!Character.isDigit(zip.charAt(i))) {
-				return false;
-			}
-		}
-		return true;
-	}
+//	public boolean isAllDigits(String zip) {
+//		for(int i = 0; i < zip.length(); i++) {
+//			if(!Character.isDigit(zip.charAt(i))) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
 	
+//   public static Processor createProcessor(String parkingFileType, String parkingFileName, String propertyFileName, String populationFileName) {
+//		
+//		if(parkingFileType.equals("csv")){
+//			return new CSVProcessor(parkingFileName, propertyFileName, populationFileName);
+//		}
+//		
+//		return new JSONProcessor(parkingFileName, propertyFileName, populationFileName);		
+//		
+//	}
 	
 }

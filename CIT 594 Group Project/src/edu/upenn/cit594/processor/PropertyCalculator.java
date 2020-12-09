@@ -6,6 +6,8 @@ import edu.upenn.cit594.data.Property;
 
 public interface PropertyCalculator {
 	
-	public abstract int calculateDataPerProperty(List<Property> properties);
+	public abstract int calculateValuePerProperty(String zipcode);
+
+	
 	
 }

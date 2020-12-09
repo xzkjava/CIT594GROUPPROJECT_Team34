@@ -42,8 +42,14 @@ public class ParkingJSONReader extends ParkingViolationReader{
 				
 		    	int fine = 0;
 		    	
+		    	String fineStr = violation.get("fine").toString();
+		    	
+		    	if(!fineStr.matches("^[+-]?\\d+$")) {
+		    		continue;
+		    	}
+		    	
 		    	try {
-		    		 Integer.parseInt(violation.get("fine").toString());
+		    		 fine = Integer.parseInt(violation.get("fine").toString());
 		    	} catch(NumberFormatException e) {
 		    		 e.printStackTrace();
 		    	}

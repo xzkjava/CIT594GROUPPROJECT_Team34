@@ -81,6 +81,15 @@ public class PropertyReader {
 				
 				String zipcode = words[indexOfZip];
 				
+				if(zipcode.isEmpty()) {
+					continue;
+				}
+				else if (!zipcode.matches("^\\d{5}$") || !zipcode.matches("^\\d{5}-?\\d{4}$")) {
+					continue;
+				}
+
+				zipcode = zipcode.substring(0, 5);
+				
 				Property propertyToAdd = new Property(marketValue, area, zipcode);
 				
 				if(!ret.containsKey(zipcode)) {
