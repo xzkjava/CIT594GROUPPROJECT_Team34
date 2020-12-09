@@ -110,7 +110,7 @@ public abstract class Processor {
 			totalPopulation = cal.computePopulation();
 
 
-				
+		}	
 		
 		return totalPopulation;
 	}
