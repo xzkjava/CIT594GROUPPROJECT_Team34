@@ -138,7 +138,7 @@ public abstract class Processor {
 	// helper function to compute fines per capita (only needs to run once)
 	private SortedMap<String, Double> computeFinePerCapita() {
 		
-		if (zipViolationMap.size() < 1) {
+		if (zipViolationMap == null || zipViolationMap.size() < 1) {
 			return null;
 		}
 		
@@ -151,24 +151,22 @@ public abstract class Processor {
 			String currentZip = next.getKey();	
 			
 			// if the population of the zip code doesn't contain this zipcode or is unknown, skip
-			if (!zipPopulationMap.containsKey(currentZip) || zipPopulationMap.get(currentZip) == null) {
+			if(!zipPopulationMap.containsKey(currentZip)) {
+				continue;
+			}
+			
+			int currentPopulation = zipPopulationMap.get(currentZip);
+			
+			
+			if (currentPopulation == 0) {
 				continue;
 			}
 			
 			List<ParkingViolation> violationsInZip = next.getValue();
 			
-			
-			// if this zipcode has no population, skip
-			int currentPopulation = zipPopulationMap.get(currentZip);
-			//need to clarify this following logic with instructor
-			//the instruction says "not display", doesn't say "not consider when population = 0
-			if (currentPopulation < 1) {
-				continue;
-			}
-			
 			int totalFines = 0;
 			for (ParkingViolation p : violationsInZip) {
-				if (!p.getState().equals("PA") || p.getZipCode() == null) {
+				if (p.getZipCode() == null || !p.getState().equals("PA") ) {
 					// skip over non-PA plates and unknown zip codes
 					continue;
 				}
@@ -177,12 +175,13 @@ public abstract class Processor {
 			}
 			
 			// if total fines is 0 (or negative, skip)
-			if (totalFines < 1) {
+			if (totalFines <= 0) {
 				continue;
 			}
 			
 			// calculate fines per capita and add to final set
 			double finesPerCapita = ((double) totalFines) / currentPopulation; 
+			
 			finesByZip.put(currentZip, finesPerCapita);
 			
 		}
@@ -207,7 +206,7 @@ public abstract class Processor {
 	private int marketValuePerPropertyHelper(String zipcode) {
 		
 		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
-		if(propertiesForZip == null) {
+		if(propertiesForZip == null || propertiesForZip.size() == 0) {
 			return 0;
 		}
 		return calculateDataPerProperty(propertiesForZip, new AverageValueCalculator());
@@ -274,7 +273,7 @@ public abstract class Processor {
 		int totalPropertyVal = 0;	// total property value of zipcode
 		
 		for (Property p : propertiesForZip) {
-			try {
+			
 				String marketValue = p.getMarketValue();
 				
 				if(!p.validateString(marketValue)) {
@@ -282,11 +281,18 @@ public abstract class Processor {
 				}
 				
 				// add property value of this property to the total
-				int propertyVal = Integer.parseInt(marketValue);
-				totalPropertyVal = totalPropertyVal + propertyVal;
+				
+				int propertyVal = 0;
+				
+				try {
+					
+					propertyVal = Integer.parseInt(marketValue);
+				
+				    totalPropertyVal = totalPropertyVal + propertyVal;
 			
-			} catch(NumberFormatException e) {
-				e.printStackTrace();
+				} catch(NumberFormatException e) {
+					
+					e.printStackTrace();
 			}
 		}
 		

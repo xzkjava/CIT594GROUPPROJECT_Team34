@@ -45,6 +45,7 @@ public class PopulationReader {
 				
 				int size = 0;
 				
+				
 				try {
 					size = Integer.parseInt(wordsInLine[1]);
 				}

@@ -49,6 +49,7 @@ public class CommandLineUserInterface {
 					System.exit(1);
 				}
 				else if (!isAllDigits(input)) {
+					System.out.println(input);
 					System.out.println("ERROR: The choice should be numbers only");
 					System.exit(1);
 				}
@@ -183,11 +184,11 @@ public class CommandLineUserInterface {
 	}
 	
 	public boolean isAllDigits(String zip) {
-		
-		if(zip.contains("[^\\d]+")) {
-			return false;
+		for(int i = 0; i < zip.length(); i++) {
+			if(!Character.isDigit(zip.charAt(i))) {
+				return false;
+			}
 		}
-		
 		return true;
 	}
 	
