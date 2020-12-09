@@ -98,8 +98,9 @@ public abstract class Processor {
 	
 	//when user types 1, run this method
 	public int calculatePopulation() {
+
 		
-		int totalPopulation = repo.getTotalPopulation();
+    	int totalPopulation = repo.getTotalPopulation();
 		
 		// otherwise calculate value, add it to saved values, and return its value
 		if (totalPopulation == -1) {
@@ -107,14 +108,15 @@ public abstract class Processor {
 			PopulationCalculator cal = new PopulationCalculator();
 			
 			totalPopulation = cal.computePopulation();
-		}
+
 
 				
 		
 		return totalPopulation;
 	}
 	
-	
+
+
 	// when user types 2, run this method
 	public SortedMap<String, Double> calculateFinePerCapita() {
 		SortedMap<String, Double> finesPerCapita = repo.getFinesPerCapita();
@@ -127,8 +129,7 @@ public abstract class Processor {
 		
 		return finesPerCapita;
 	}
-	
-	
+
 	
 	// when user types 3, run this method
 	
@@ -151,7 +152,13 @@ public abstract class Processor {
 	public int calculateAreaPerProperty(String zipcode) {
 		
 		HashMap<String, Integer> areaPerProperty = repo.getAreaPerProperty();
-		if (areaPerProperty != null && areaPerProperty.containsKey(zipcode)) {
+
+		if (areaPerProperty == null || areaPerProperty.size() < 1) {
+			return 0;
+		}
+		
+		if (areaPerProperty.containsKey(zipcode)) {
+
 			// value already calculated previously
 			return areaPerProperty.get(zipcode);
 		}
@@ -160,13 +167,21 @@ public abstract class Processor {
 		AreaCalculator cal = new AreaCalculator();
 		
 		return calculateDataPerProperty(zipcode, cal);
-		
+
 	}
+	
 	
 	// when user types 5, run this method
 	public int calculateValuePerCapita(String zipcode) {
+
 		HashMap<String, Integer> marketValPerCapita = repo.getMarketValPerCapita();
-		if (marketValPerCapita != null && marketValPerCapita.containsKey(zipcode)) {
+		
+		if (marketValPerCapita == null || marketValPerCapita.size() < 1) {
+			return 0;
+		}
+		
+		if (marketValPerCapita.containsKey(zipcode)) {
+
 			// value already calculated previously
 			return marketValPerCapita.get(zipcode);
 		}
