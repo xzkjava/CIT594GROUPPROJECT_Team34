@@ -21,7 +21,7 @@ public class MemoizedRepo {
 	//option 1
 	private int totalPopulation = -1;
 	
-	private SortedMap<String, Double> finesPerCapita = new TreeMap<>();
+	private SortedMap<String, Double> finesPerCapita;
 	
 	private HashMap<String, Integer> areaPerProperty = new HashMap<>();
 	
@@ -29,13 +29,13 @@ public class MemoizedRepo {
 	
 	private HashMap<String, Integer> marketValPerCapita = new HashMap<>();
 	
-	private HashMap<String, Long> zipTotalValue = new HashMap<>();
+	private HashMap<String, Double> zipTotalValue = new HashMap<>();
 	
 	private HashMap<String, Integer> zipPropNumForValue = new HashMap<>();
 	
 	private HashMap<String, Integer> zipPropNumForArea = new HashMap<>();
 	
-	private HashMap<String, Long> zipTotalArea = new HashMap<>();
+	private HashMap<String, Double> zipTotalArea = new HashMap<>();
 	
 	private HashMap<String, Integer> zipTotalFines = new HashMap<>();
 	
@@ -105,7 +105,7 @@ public class MemoizedRepo {
 		return marketValPerCapita;
 	}
 
-	public HashMap<String, Long> getZipTotalValue() {
+	public HashMap<String, Double> getZipTotalValue() {
 		return zipTotalValue;
 	}
 
@@ -196,11 +196,11 @@ public class MemoizedRepo {
 		this.normalizedRatings = normalizedRatings;
 	}
 
-	public HashMap<String, Long> getZipTotalArea() {
+	public HashMap<String, Double> getZipTotalArea() {
 		return zipTotalArea;
 	}
 
-	public void setZipTotalArea(HashMap<String, Long> zipTotalArea) {
+	public void setZipTotalArea(HashMap<String, Double> zipTotalArea) {
 		this.zipTotalArea = zipTotalArea;
 	}
 

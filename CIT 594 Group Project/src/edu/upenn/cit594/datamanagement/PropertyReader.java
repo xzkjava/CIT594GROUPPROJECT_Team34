@@ -40,13 +40,14 @@ public class PropertyReader {
 		try {
 			String line = buffReader.readLine();
 			
-			String[ ] wordsInLine = line.split(",");
+			String[ ] wordsInLine = line.split(",", -1);
 			
 			int indexOfZip = 0;
 			
 			int indexOfMarketValue = 0;
 			
 			int indexOfArea = 0;
+			
 			
 			for(int i = 0; i < wordsInLine.length; i++) {
 				
@@ -65,15 +66,32 @@ public class PropertyReader {
 			}
 			
 			while ((line = buffReader.readLine()) != null) {
+				//System.out.println(line);
+				//count++;
+//				Pattern pattern = Pattern.compile("\".+\"");
+//				Matcher matcher = pattern.matcher(line);
+//				
+//				while(!matcher.hitEnd()) {
+//					if (matcher.find()) {
+//						matcher.replaceAll("\" \"");
+//					}
+//					
+//				}
+				//,.#+-&' /
+				line = line.replaceAll("\"[\\d\\w\\p{Punct} ]{0,30}\"", "\" \"");
 				
-				Pattern pattern = Pattern.compile("\".+\"");
-				Matcher matcher = pattern.matcher(line);
+				//System.out.println(line);
+		
+				String[] words = line.split(",", -1);
+				 
+				//System.out.println("words size: " + words.length);
 				
-				if(matcher.matches()) {
-					matcher.replaceAll("\" \"");
-				}
+				//System.out.println("words size: " + words.length);
 				
-				String[] words = line.split(",");
+				
+//				for(String word: words) {
+//					System.out.print(word + ",");
+//				}
 				
 				String marketValue = words[indexOfMarketValue];
 				
@@ -84,10 +102,14 @@ public class PropertyReader {
 				if(zipcode.isEmpty()) {
 					continue;
 				}
-				else if (!zipcode.matches("^\\d{5}$") || !zipcode.matches("^\\d{5}-?\\d{4}$")) {
+				else if (!zipcode.matches("^[\\d-]+$")) {
 					continue;
 				}
 
+				if(zipcode.length() < 5) {
+					continue;
+				}
+				
 				zipcode = zipcode.substring(0, 5);
 				
 				Property propertyToAdd = new Property(marketValue, area, zipcode);

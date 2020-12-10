@@ -1,5 +1,6 @@
 package edu.upenn.cit594.processor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,42 +27,6 @@ public abstract class Processor {
 	
 	private MemoizedRepo repo;
 	
-//	private HashMap<String, List<ParkingViolation>> zipViolationMap;
-//	
-//	private HashMap<String, Integer> zipPopulationMap;
-//	
-//	private HashMap<String, List<Property>> zipPropertyMap;
-//	
-//	
-//	
-//	// to save memoized values
-//	
-//	//option 1
-//	private int totalPopulation;
-//	
-//	private SortedMap<String, Double> finesPerCapita;
-//	
-//	private HashMap<String, Integer> areaPerProperty;
-//	
-//	private HashMap<String, Integer> marketValPerProperty;
-//	
-//	private HashMap<String, Integer> marketValPerCapita;
-//	
-//	private HashMap<String, Long> zipTotalValue;
-//	
-//	private HashMap<String, Integer> zipTotalPropNum;
-//	
-//	// for memoizing rateZipCodes
-//	private TreeMap<String, Double> normalizedFine;
-//	
-//	private TreeMap<String, Double> normalizedLiveableArea;
-//	
-//	private TreeMap<String, Double> normalizedPropertyValues;
-//	
-//	private TreeMap<String, Double> normalizedPopulation;
-//	
-//	private TreeMap<String, Integer> normalizedRatings;
-//	
 
 	
 	protected Processor (String parkingFileName, String propertyFileName, String populationFileName) {
@@ -78,18 +43,10 @@ public abstract class Processor {
 		
 		repo.setZipPopulationMap(populationReader.parsePopulation());
 		
-		repo.setZipPropertyMap(propertyReader.parseProperties());
+		HashMap<String, List<Property>> properties = propertyReader.parseProperties();
 		
-//		// initialize containers to save memoized values
-//		finesPerCapita = new TreeMap<>();
-//		
-//		areaPerProperty = new HashMap<>();
-//		
-//		marketValPerProperty = new HashMap<>();
-//		
-//		marketValPerCapita = new HashMap<>();
-//		
-//		totalPopulation = -1;
+		repo.setZipPropertyMap(properties);
+
 	}
 	
 	
@@ -152,12 +109,8 @@ public abstract class Processor {
 	public int calculateAreaPerProperty(String zipcode) {
 		
 		HashMap<String, Integer> areaPerProperty = repo.getAreaPerProperty();
-
-		if (areaPerProperty == null || areaPerProperty.size() < 1) {
-			return 0;
-		}
 		
-		if (areaPerProperty.containsKey(zipcode)) {
+		if (areaPerProperty != null && areaPerProperty.containsKey(zipcode)) {
 
 			// value already calculated previously
 			return areaPerProperty.get(zipcode);
@@ -176,11 +129,7 @@ public abstract class Processor {
 
 		HashMap<String, Integer> marketValPerCapita = repo.getMarketValPerCapita();
 		
-		if (marketValPerCapita == null || marketValPerCapita.size() < 1) {
-			return 0;
-		}
-		
-		if (marketValPerCapita.containsKey(zipcode)) {
+		if (marketValPerCapita != null && marketValPerCapita.containsKey(zipcode)) {
 
 			// value already calculated previously
 			return marketValPerCapita.get(zipcode);

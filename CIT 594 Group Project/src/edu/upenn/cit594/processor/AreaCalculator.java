@@ -20,11 +20,11 @@ public class AreaCalculator implements PropertyCalculator{
 		}
 		int count = -1; 			// number of properties in this zipcode
 		
-		long totalArea = -1; 
+		double totalArea = -1; 
 		
 		int averageArea = 0; // total price of houses in this zipcode
 		
-		HashMap<String, Long> zipTotalArea = repo.getZipTotalArea();
+		HashMap<String, Double> zipTotalArea = repo.getZipTotalArea();
 		
 		HashMap<String, Integer> zipPropNum = repo.getZipPropNumForArea();
 		
@@ -68,14 +68,14 @@ public class AreaCalculator implements PropertyCalculator{
 			for (Property p: properties) {
 				
 				String areaStr = p.getTotalLivableArea();
-				if( areaStr == null || areaStr.isEmpty() || !areaStr.matches("^\\d++$")) {
+				if( areaStr == null || areaStr.isEmpty() || !areaStr.matches("^[\\d.]+$")) {
 					continue;
 				}
 				
 				try {
 					
 					// add the area to running total, update count
-					int area = Integer.parseInt(areaStr);
+					double area = Double.parseDouble(areaStr);
 					totalArea = totalArea + area;
 					count++;
 					

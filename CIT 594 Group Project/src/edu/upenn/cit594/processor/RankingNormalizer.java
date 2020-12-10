@@ -208,7 +208,7 @@ public class RankingNormalizer {
 		
 		TreeMap<String, Double> averageLiveableArea = new TreeMap<String, Double>();
 		
-		HashMap<String, Long> zipTotalArea = repo.getZipTotalArea();
+		HashMap<String, Double> zipTotalArea = repo.getZipTotalArea();
 		
 		HashMap<String, Integer> zipNumOfPropForArea = repo.getZipPropNumForArea();
 		
@@ -223,7 +223,7 @@ public class RankingNormalizer {
 				continue;
 			}
 			
-			long totalArea = -1;
+			double totalArea = -1;
 			int count = -1;
 			double averageArea = 0;
 			
@@ -352,7 +352,7 @@ public class RankingNormalizer {
 		
 		TreeMap<String, Double> averagePropertyValues = new TreeMap<String, Double>();
 		
-		HashMap<String, Long> zipTotalValue = repo.getZipTotalValue();
+		HashMap<String, Double> zipTotalValue = repo.getZipTotalValue();
 		
 		HashMap<String, Integer> zipNumOfPropForValue = repo.getZipPropNumForValue();
 		
@@ -368,7 +368,7 @@ public class RankingNormalizer {
 				continue;
 			}
 			
-			long totalPrice = -1;
+			double totalPrice = -1;
 			int count = -1;
 			double averagePrice = 0;
 			

@@ -16,19 +16,23 @@ public class ValueCalculator implements PropertyCalculator{
 	@Override
 	public int calculateValuePerProperty(String zipcode) {
 		
-		if(zipcode == null || zipcode.isEmpty()) {
+        if(zipcode == null || zipcode.isEmpty()) {
 			throw new IllegalArgumentException("The Zipcode passed to calculateValuePerProperty is invalid");
 		}
 		
 		int count = -1; 			// number of properties in this zipcode
-		long totalPrice = -1; 
+		double totalPrice = -1; 
 		int averagePrice = 0; // total price of houses in this zipcode
 		
-		HashMap<String, Long> zipTotalValue = repo.getZipTotalValue();
+		HashMap<String, Integer> zipPopulationMap = repo.getZipPopulationMap();
+		HashMap<String, Double> zipTotalValue = repo.getZipTotalValue();
 		HashMap<String, Integer> zipTotalPropNum = repo.getZipPropNumForValue();
 		HashMap<String, Integer> valuePerProperty = repo.getMarketValPerProperty();
 		
-		
+		if(zipPopulationMap != null && !zipPopulationMap.containsKey(zipcode)) {
+			valuePerProperty.put(zipcode, 0);
+			return 0;
+		}
 		if(zipTotalValue != null && zipTotalValue.containsKey(zipcode)) {
 			totalPrice = zipTotalValue.get(zipcode);
 		}
@@ -57,13 +61,13 @@ public class ValueCalculator implements PropertyCalculator{
 					
 					String valueStr = p.getMarketValue();
 					
-					if( valueStr == null || valueStr.isEmpty() ||!valueStr.matches("^\\d+$")) {
+					if( valueStr == null || valueStr.isEmpty() ||!valueStr.matches("^[\\d+.]+$")) {
 						continue;
 					}
 					
 					try {	
 						// add this property's price to running total and update count
-						int marketValue = Integer.parseInt(valueStr);
+						double marketValue = Double.parseDouble(valueStr);
 						totalPrice = totalPrice + marketValue;
 						count++;
 						
@@ -105,8 +109,8 @@ public class ValueCalculator implements PropertyCalculator{
 		}
 		
 		HashMap<String, Integer> valuePerCapita = repo.getMarketValPerCapita();
-		HashMap<String, Long> zipTotalValue = repo.getZipTotalValue();
-		long totalPropertyVal = -1;	
+		HashMap<String, Double> zipTotalValue = repo.getZipTotalValue();
+		double totalPropertyVal = -1;	
 		int averageVal = -1;// total property value of zipcode
 		
 		if(zipTotalValue != null && zipTotalValue.containsKey(zipcode)) {
@@ -123,7 +127,7 @@ public class ValueCalculator implements PropertyCalculator{
 			HashMap<String, List<Property>> zipPropertyMap = repo.getZipPropertyMap();
 			List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
 			
-			if(propertiesForZip == null) {
+			if(propertiesForZip == null || propertiesForZip.size() == 0) {
 				return 0;
 			}
 			
@@ -135,18 +139,18 @@ public class ValueCalculator implements PropertyCalculator{
 					String marketValue = p.getMarketValue();
 					
 					
-					if(marketValue == null || marketValue.isEmpty() ||!marketValue.matches("^[+-]?\\d+$")) {
+					if(marketValue == null || marketValue.isEmpty() ||!marketValue.matches("^[+-]?[\\d.]+$")) {
 						continue;
 					}
 					
 					// add property value of this property to the total
 					
-					int propertyVal = 0;
+					double propertyVal = 0;
 					
 					
 					try {
 						
-						propertyVal = Integer.parseInt(marketValue);
+						propertyVal = Double.parseDouble(marketValue);
 					
 					    totalPropertyVal = totalPropertyVal + propertyVal;
 					   
@@ -174,35 +178,6 @@ public class ValueCalculator implements PropertyCalculator{
 		
 		
 	}
-	
-	
-	
-//	public int marketValuePerPropertyHelper(String zipcode) {
-//		
-//		List<Property> propertiesForZip = zipPropertyMap.get(zipcode);
-//		if(propertiesForZip == null || propertiesForZip.size() == 0) {
-//			return 0;
-//		}
-//		AverageValueCalculator cal = new AverageValueCalculator();
-//		if(zipTotalValue != null && zipTotalValue.containsKey(zipcode)) {
-//			cal.setTotalValue(zipTotalValue.get(zipcode));
-//		}
-//		
-//		if(zipTotalPropNum != null && zipTotalPropNum.containsKey(zipcode)) {
-//			cal.setNumOfProp(zipTotalPropNum.get(zipcode));
-//		}
-//		
-//	
-//		int valuePerProp = calculateDataPerProperty(propertiesForZip, cal);
-//		
-//		//save the total value for the zip in map
-//		zipTotalValue.put(zipcode, cal.getTotalValue());
-//		
-//		//save total number of properties for zip in map
-//		zipTotalPropNum.put(zipcode, cal.getNumOfProp());
-//		
-//		
-//		return valuePerProp;
-//		
-//	}
+		
+
 }
