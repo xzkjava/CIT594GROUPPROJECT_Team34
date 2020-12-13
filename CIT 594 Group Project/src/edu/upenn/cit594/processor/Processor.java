@@ -147,7 +147,7 @@ public abstract class Processor {
 		}
 		
 		if(zipPropNumForValue.containsKey(zipcode)) {
-			numOfProp = zipPropNumForValue.get(zipcode);
+			numOfProp = zipPropNumForValue.get(zipcode);  //get memoized number of property
 		}
 		
 		//if there is no property in the zipcode
@@ -161,7 +161,7 @@ public abstract class Processor {
 		}
 		
 		if(zipTotalValue.containsKey(zipcode)) {
-			totalValue = zipTotalValue.get(zipcode);
+			totalValue = zipTotalValue.get(zipcode); //get memoized total value 
 		}		
 		
 		if(totalValue != -1 && numOfProp != -1) {
@@ -592,7 +592,7 @@ public abstract class Processor {
 			}
 			
 			if(zipTotalFines.containsKey(currentZip)) {
-				totalFine = zipTotalFines.get(currentZip);
+				totalFine = zipTotalFines.get(currentZip); //get memoized total fines
 			}
 			
 			
@@ -601,7 +601,7 @@ public abstract class Processor {
 			}
 			
 			if(zipNumOfViolations.containsKey(currentZip)) {
-				count = zipNumOfViolations.get(currentZip);
+				count = zipNumOfViolations.get(currentZip); //get memoized total number of parking violations
 			}
 			
 			if (totalFine == -1 && count == -1) {
@@ -626,6 +626,7 @@ public abstract class Processor {
 					
 				}
 				
+				//memoize total fines and total number of violations
 				zipTotalFines.put(currentZip, totalFine);
 				zipNumOfViolations.put(currentZip, count);
 			}
@@ -636,7 +637,7 @@ public abstract class Processor {
 			minFine = Math.min(minFine, avgFine);
 			maxFine = Math.max(maxFine, avgFine);
 			
-		   averageFine.put(currentZip, avgFine);
+		   averageFine.put(currentZip, avgFine); //memoize data
 			
 		}
 		
@@ -709,16 +710,16 @@ public abstract class Processor {
 				for (Property p: properties) {
 					String areaStr = p.getTotalLivableArea();
 					
-					if(areaStr == null ||areaStr.isEmpty() || !areaStr.matches("^\\d+$")) {
+					if(areaStr == null ||areaStr.isEmpty() || !areaStr.matches("^[\\d.]+$")) {
 						continue;
 					}
 					
 					
 					try {
 						
-						// add this property's price to running total and update count
-						int marketValue = Integer.parseInt(areaStr);
-						totalArea = totalArea + marketValue;
+						// add this property's area to running total and update count
+						double area = Double.parseDouble(areaStr);
+						totalArea = totalArea + area;
 						count++;
 						
 					}catch(NumberFormatException e) {
@@ -727,7 +728,7 @@ public abstract class Processor {
 					
 				}
 				
-               zipTotalArea.put(currentZip, totalArea);
+                zipTotalArea.put(currentZip, totalArea);
 			    zipPropNumForArea.put(currentZip, count);
 			}
 			
@@ -735,7 +736,7 @@ public abstract class Processor {
 				averageArea = 0;
 			}
 			else {
-				averageArea = (double) totalArea / count;
+				averageArea = totalArea / count;
 			}
 			
 			
@@ -759,7 +760,7 @@ public abstract class Processor {
 			double averageArea = next.getValue();
 			
 			
-			double normalizedPropertyValue = ((double)(averageArea - minArea)) / (maxArea - minArea) ;
+			double normalizedPropertyValue = (averageArea - minArea) / (maxArea - minArea) ;
 			normalizedLiveableArea.put(currentZip, normalizedPropertyValue);
 			
 			
@@ -884,7 +885,7 @@ public abstract class Processor {
 				averagePrice = 0;
 			}
 			else {
-				averagePrice = (double) totalPrice / count;
+				averagePrice = totalPrice / count;
 			}
 			
 			
@@ -908,7 +909,7 @@ public abstract class Processor {
 			
 			double averagePropertyValue = next.getValue();
 			
-			double normalizedPropertyValue = ((double)(averagePropertyValue - minPropertyValue)) / (maxPropertyValue - minPropertyValue) ;
+			double normalizedPropertyValue = (averagePropertyValue - minPropertyValue) / (maxPropertyValue - minPropertyValue) ;
 			
 			normalizedPropertyValues.put(currentZip, normalizedPropertyValue);
 			
