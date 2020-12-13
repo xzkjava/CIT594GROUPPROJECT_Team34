@@ -1,6 +1,5 @@
 package edu.upenn.cit594.processor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -11,6 +10,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import edu.upenn.cit594.data.ParkingViolation;
+import edu.upenn.cit594.data.Population;
 import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.datamanagement.ParkingViolationReader;
 import edu.upenn.cit594.datamanagement.PopulationReader;
@@ -24,18 +24,16 @@ public abstract class Processor {
 	
 	private PopulationReader populationReader;
 	
-    //the three files to store the parsed data from three input files
+    //store the parsed data from three input files
 	private HashMap<String, List<ParkingViolation>> zipViolationMap;
 	
-	private HashMap<String, Integer> zipPopulationMap;
+	private HashMap<String, Population> zipPopulationMap;
 	
 	private HashMap<String, List<Property>> zipPropertyMap;
 	
 	
 	
 	// to save memoized values
-	
-	//option 1
 	private int totalPopulation = -1;
 	
 	private SortedMap<String, Double> finesPerCapita;
@@ -93,7 +91,7 @@ public abstract class Processor {
 	
 	//when user types 1, run this method
 	public int calculatePopulation() {
-		
+		//check memoized data
 		// otherwise calculate value, add it to saved values, and return its value
 		if (totalPopulation == -1) {
 			
@@ -108,7 +106,7 @@ public abstract class Processor {
 
 	// when user types 2, run this method
 	public SortedMap<String, Double> calculateFinePerCapita() {
-
+        //check memoized data
 		// otherwise calculate value, add it to saved values, and return its value
 		if (finesPerCapita == null) {
 			
@@ -147,10 +145,12 @@ public abstract class Processor {
 		if(zipPropNumForValue == null) {
 			zipPropNumForValue = new HashMap<>();
 		}
+		
 		if(zipPropNumForValue.containsKey(zipcode)) {
 			numOfProp = zipPropNumForValue.get(zipcode);
 		}
 		
+		//if there is no property in the zipcode
 		if( numOfProp == 0) {
 			marketValPerProperty.put(zipcode, 0);
 			return 0;
@@ -166,7 +166,7 @@ public abstract class Processor {
 		
 		if(totalValue != -1 && numOfProp != -1) {
 			averageVal = (int) totalValue / numOfProp;
-			marketValPerProperty.put(zipcode, averageVal);
+			marketValPerProperty.put(zipcode, averageVal); //memoized data
 			return averageVal;
 		}
 		
@@ -174,7 +174,7 @@ public abstract class Processor {
 		
 		if (properties == null) {
 			
-			marketValPerProperty.put(zipcode, 0);
+			marketValPerProperty.put(zipcode, 0); 
 			
 			return 0;
 		}
@@ -235,8 +235,11 @@ public abstract class Processor {
 		}
 		
 		if(totalArea != -1 && count != -1) {
+			
 			averageArea = (int) totalArea / count;
-			areaPerProperty.put(zipcode, averageArea);
+			
+			areaPerProperty.put(zipcode, averageArea); //memoize data
+			
 			return averageArea;
 		}
 		// otherwise calculate value, add it to saved values, and return its value
@@ -317,11 +320,11 @@ public abstract class Processor {
 		int population = 0;
 		
 		// iterate over set and sum up populations
-		Iterator<Entry<String, Integer>> it = zipPopulationMap.entrySet().iterator();
+		Iterator<Entry<String, Population>> it = zipPopulationMap.entrySet().iterator();
 		while (it.hasNext()) {
 			
-			Entry<String, Integer> next = it.next();
-			population = population + next.getValue();
+			Entry<String, Population> next = it.next();
+			population = population + next.getValue().getSize();
 		}
 		
 		//save total population 
@@ -350,7 +353,7 @@ public abstract class Processor {
 					continue;
 				}
 				
-				int currentPopulation = zipPopulationMap.get(currentZip);
+				int currentPopulation = zipPopulationMap.get(currentZip).getSize();
 				
 				
 				if (currentPopulation == 0) {
@@ -399,7 +402,7 @@ public abstract class Processor {
 			return 0;
 		}
 		
-		int populationOfZip = zipPopulationMap.get(zipcode);
+		int populationOfZip = zipPopulationMap.get(zipcode).getSize();
 
 		if (populationOfZip == 0) {
 			// population not found 
@@ -774,11 +777,11 @@ public abstract class Processor {
 		int minPopulation = Integer.MAX_VALUE;
 		int maxPopulation = Integer.MIN_VALUE;
 		
-		Iterator<Entry<String, Integer>> it = zipPopulationMap.entrySet().iterator();
+		Iterator<Entry<String, Population>> it = zipPopulationMap.entrySet().iterator();
 		while (it.hasNext()) {
 			
-			Entry<String, Integer> next = it.next();
-			int currentPopulation = next.getValue();
+			Entry<String, Population> next = it.next();
+			int currentPopulation = next.getValue().getSize();
 			
 			minPopulation = Math.min(minPopulation , currentPopulation);
 			maxPopulation = Math.max(maxPopulation , currentPopulation);
@@ -790,13 +793,13 @@ public abstract class Processor {
 
 		
 		// second pass (on valid values), normalize the averages based on minimum and maximum
-		Iterator<Entry<String, Integer>> it2 = zipPopulationMap.entrySet().iterator();
+		Iterator<Entry<String, Population>> it2 = zipPopulationMap.entrySet().iterator();
 		while (it2.hasNext()) {
 		
-			Entry<String, Integer> next = it2.next();
+			Entry<String, Population> next = it2.next();
 			
 			String currentZip = next.getKey();	
-			int currentPopulation = next.getValue();
+			int currentPopulation = next.getValue().getSize();
 			
 			double normalizedCurrentPopulation = ((double)(currentPopulation - minPopulation)) / (maxPopulation - minPopulation) ;
 			normalizedPopulation.put(currentZip, normalizedCurrentPopulation);

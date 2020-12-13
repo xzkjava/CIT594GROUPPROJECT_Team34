@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
+import edu.upenn.cit594.data.Population;
 import edu.upenn.cit594.logging.Logger;
 
 public class PopulationReader {
@@ -14,8 +15,6 @@ public class PopulationReader {
 	public PopulationReader(String fileName) {
 		
 		try {
-				
-			//File file = new File("src" + File.separator + fileName);
 			
 			buffReader = new BufferedReader (new FileReader(fileName));
 		
@@ -30,15 +29,16 @@ public class PopulationReader {
 	
 	}
 	
-	//this method returns a map that associates a zipcode with the population size
-	public HashMap<String, Integer> parsePopulation(){
+	//this method returns a map that associates a zipcode with a population object
+	public HashMap<String, Population> parsePopulation(){
 		
-		HashMap<String, Integer> ret = new HashMap<>();
+		HashMap<String, Population> ret = new HashMap<>();
 		
 		String line = "";
 		
 		try {
 			while ((line = buffReader.readLine()) != null) {
+				
 				String[] wordsInLine = line.split(" ");
 				
 				String zipcode = wordsInLine[0];
@@ -53,12 +53,14 @@ public class PopulationReader {
 					e.printStackTrace();
 				}
 				
-				ret.put(zipcode, size);
+				Population popToAdd = new Population(zipcode, size);
+				
+				ret.put(zipcode, popToAdd);
 				
 				
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return ret;

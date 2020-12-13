@@ -22,18 +22,6 @@ public class Property {
 	public String getZipCode() {
 		return zipcode;
 	}
-	
-//    public boolean validateString(String value) {
-//	    	
-//	    	if(value == null || value.isEmpty()) {
-//	    		return false;
-//	    	}
-//	    	
-//	    	if(value.matches("^[+-]?\\d+$")) {
-//	    		return true;
-//	    	}
-//	    	
-//	    	return false;
-//		}
+
 
 }

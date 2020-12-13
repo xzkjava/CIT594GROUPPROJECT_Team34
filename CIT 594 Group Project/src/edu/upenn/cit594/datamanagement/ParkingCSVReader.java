@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.upenn.cit594.data.ParkingViolation;
-import edu.upenn.cit594.logging.Logger;
 
 public class ParkingCSVReader extends ParkingViolationReader {
 	private BufferedReader buffReader;
@@ -20,6 +19,11 @@ public class ParkingCSVReader extends ParkingViolationReader {
 		
 	}
 
+	/*
+	 * This method parses the given parking violation CSV file into 
+	 * a HashMap data structure, mapping zipcode to a list of properties
+	 * 
+	 */
 	@Override
 	public HashMap<String, List<ParkingViolation>> parseParkingViolations() {
 		
@@ -64,7 +68,6 @@ public class ParkingCSVReader extends ParkingViolationReader {
 				
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.err.println("Error parsing line '" + line + "'.");
 			e.printStackTrace();
 		} catch (Exception e) {

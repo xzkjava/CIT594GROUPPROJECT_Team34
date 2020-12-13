@@ -12,7 +12,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import edu.upenn.cit594.data.ParkingViolation;
-import edu.upenn.cit594.logging.Logger;
 
 public class ParkingJSONReader extends ParkingViolationReader{
 

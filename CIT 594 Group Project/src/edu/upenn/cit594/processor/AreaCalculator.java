@@ -7,6 +7,11 @@ import edu.upenn.cit594.data.Property;
 
 public class AreaCalculator implements PropertyCalculator{
 	
+	/*
+	 * This method calculates average total liveable area per property for a given zipcode,
+	 * insert an entry mapping the zipcode to its total liveable area in a memoized HashMap object,
+	 * insert an entry mapping the zipcode to its total number of properies in a memoized HashMap object.
+	 */
 	@Override
 	public int calculateValuePerProperty(String zipcode, List<Property> properties, HashMap<String, Double> zipTotalMap, HashMap<String, Integer> zipCountMap) {
 		if(zipcode == null || zipcode.isEmpty() || properties == null || zipTotalMap == null || zipCountMap == null) {
@@ -35,7 +40,7 @@ public class AreaCalculator implements PropertyCalculator{
 				
 			}
 			
-			
+			//save data in memoized data structures
             zipTotalMap.put(zipcode, totalArea);
 			zipCountMap.put(zipcode, count);
 		

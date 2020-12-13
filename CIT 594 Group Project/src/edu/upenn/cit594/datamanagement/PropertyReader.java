@@ -42,11 +42,11 @@ public class PropertyReader {
 			
 			String[ ] wordsInLine = line.split(",", -1);
 			
-			int indexOfZip = 0;
+			int indexOfZip = -1;
 			
-			int indexOfMarketValue = 0;
+			int indexOfMarketValue = -1;
 			
-			int indexOfArea = 0;
+			int indexOfArea = -1;
 			
 			
 			for(int i = 0; i < wordsInLine.length; i++) {
@@ -65,8 +65,13 @@ public class PropertyReader {
 				}
 			}
 			
+			if(indexOfZip == -1 || indexOfMarketValue == -1 || indexOfArea == -1) {
+				System.err.println("One or more fields are missing from the Properties files: indexOfZip, indexOfMarketValue, indexOfArea");
+				return null;
+			}
+			
 			while ((line = buffReader.readLine()) != null) {
-				
+				//remove comma inside quote
 				line = removeCommaInsideQuote(line);
 	       
 				String[] words = line.split(",", -1);
@@ -130,6 +135,7 @@ public class PropertyReader {
 		}
 		
 		int size = indices.size();
+		
 		//if the text doesn't contain quotes or quotation marks don't come in pairs
 		if(size <= 1) {
 			return text;
@@ -146,7 +152,7 @@ public class PropertyReader {
 				break;
 			}
 			
-			if(Character.isDigit(text.charAt(startQuote - 1))  || (text.charAt(startQuote - 1) != '\"' && text.charAt(startQuote - 1 ) != ',')){   //this " is not a start quotation mark
+			if(Character.isDigit(text.charAt(startQuote - 1))  || (text.charAt(startQuote - 1) != '\"' && text.charAt(startQuote - 1 ) != ',')){   //skip location data like 1/5", this " is not a start quotation mark
 				continue;
 			}
 			
@@ -166,6 +172,7 @@ public class PropertyReader {
 
 		} while(!indices.isEmpty() && start < text.length());
 		
+	   //no quotation in this row
 	   if(endQuote == -1) {
 		   return text;
 	   }
