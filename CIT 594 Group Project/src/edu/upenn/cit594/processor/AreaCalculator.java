@@ -17,9 +17,9 @@ public class AreaCalculator implements PropertyCalculator{
 		if(zipcode == null || zipcode.isEmpty() || properties == null || zipTotalMap == null || zipCountMap == null) {
 			throw new IllegalArgumentException("The zipcode passed into calculateValuePerProperty inside AreaCalculator is not invalid.");
 		}
-		int count = -1; 			// number of properties in this zipcode
+		int count = 0; 			// number of properties in this zipcode
 		
-		double totalArea = -1; 
+		double totalArea = 0; 
 		
         for (Property p: properties) {
 				
