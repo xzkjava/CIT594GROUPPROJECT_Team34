@@ -6,9 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Queue;
 
 import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.logging.Logger;
@@ -66,32 +66,10 @@ public class PropertyReader {
 			}
 			
 			while ((line = buffReader.readLine()) != null) {
-				//System.out.println(line);
-				//count++;
-//				Pattern pattern = Pattern.compile("\".+\"");
-//				Matcher matcher = pattern.matcher(line);
-//				
-//				while(!matcher.hitEnd()) {
-//					if (matcher.find()) {
-//						matcher.replaceAll("\" \"");
-//					}
-//					
-//				}
-				//,.#+-&' /
-				line = line.replaceAll("\"[\\d\\w\\p{Punct} ]{0,30}\"", "\" \"");
 				
-				//System.out.println(line);
-		
+				line = removeCommaInsideQuote(line);
+	       
 				String[] words = line.split(",", -1);
-				 
-				//System.out.println("words size: " + words.length);
-				
-				//System.out.println("words size: " + words.length);
-				
-				
-//				for(String word: words) {
-//					System.out.print(word + ",");
-//				}
 				
 				String marketValue = words[indexOfMarketValue];
 				
@@ -137,4 +115,67 @@ public class PropertyReader {
 		
 		return ret;
 	}
+	
+	private String removeCommaInsideQuote(String text) {
+		
+		StringBuilder newText = new StringBuilder();
+		
+		//the queue indices will store all indices for quotation marks
+		Queue<Integer> indices = new LinkedList<>();
+		
+		for(int i = 0; i < text.length(); i++) {
+			if(text.charAt(i) == '\"') {
+				indices.add(i);
+			}
+		}
+		
+		int size = indices.size();
+		//if the text doesn't contain quotes or quotation marks don't come in pairs
+		if(size <= 1) {
+			return text;
+		}
+	   
+		int start = 0;
+		int startQuote = -1;
+		int endQuote = -1;
+		
+		do {
+			startQuote = indices.poll();
+			
+			if(start >= startQuote) {
+				break;
+			}
+			
+			if(Character.isDigit(text.charAt(startQuote - 1))  || (text.charAt(startQuote - 1) != '\"' && text.charAt(startQuote - 1 ) != ',')){   //this " is not a start quotation mark
+				continue;
+			}
+			
+			newText.append(text.substring(start, startQuote));
+			
+			if(indices.isEmpty()) {
+				break;
+			}
+			
+			endQuote = indices.poll();
+			
+			//append quote and remove comma inside quote
+			newText.append(text.substring(startQuote, endQuote).replace(",", " "));
+			
+			start = endQuote;
+			
+
+		} while(!indices.isEmpty() && start < text.length());
+		
+	   if(endQuote == -1) {
+		   return text;
+	   }
+	   
+	   newText.append(text.substring(endQuote));
+	   
+	   String ret = newText.toString();
+	   
+	   return ret;
+		
+	}
+		
 }

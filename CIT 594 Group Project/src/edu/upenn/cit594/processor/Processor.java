@@ -77,8 +77,7 @@ public abstract class Processor {
 		
 		propertyReader = new PropertyReader(propertyFileName);
 		
-		populationReader = new PopulationReader(populationFileName);
-		
+		populationReader = new PopulationReader(populationFileName);	
 		
 		zipViolationMap = parkingReader.parseParkingViolations();
 		
