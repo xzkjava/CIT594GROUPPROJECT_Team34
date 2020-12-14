@@ -69,10 +69,8 @@ public class ParkingCSVReader extends ParkingViolationReader {
 				
 			}
 		} catch (IOException e) {
-			System.err.println("Error parsing line '" + line + "'.");
 			e.printStackTrace();
 		} catch (Exception e) {
-			System.err.println("Error parsing line '" + line + "'.");
 			e.printStackTrace();
 		}
 		
