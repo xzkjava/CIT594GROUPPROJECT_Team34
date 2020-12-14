@@ -2,7 +2,6 @@ package edu.upenn.cit594.processor;
 
 import edu.upenn.cit594.datamanagement.ParkingJSONReader;
 import edu.upenn.cit594.datamanagement.ParkingViolationReader;
-import edu.upenn.cit594.logging.Logger;
 
 public class JSONProcessor extends Processor{
 

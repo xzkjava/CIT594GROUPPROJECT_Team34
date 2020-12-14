@@ -1,9 +1,7 @@
 package edu.upenn.cit594.datamanagement;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,9 +24,6 @@ public abstract class ParkingViolationReader {
 				
 				e.printStackTrace();
 		}
-			
-		
-	
 		
 	
 	}

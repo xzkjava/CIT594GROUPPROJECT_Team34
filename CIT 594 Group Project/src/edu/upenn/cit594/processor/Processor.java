@@ -67,8 +67,6 @@ public abstract class Processor {
 	
 	private TreeMap<String, Integer> normalizedRatings;
 	
-
-	
 	protected Processor (String parkingFileName, String propertyFileName, String populationFileName) {
 		
 		parkingReader = createParkingReader(parkingFileName);
