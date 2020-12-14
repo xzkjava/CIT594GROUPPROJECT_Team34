@@ -121,19 +121,20 @@ public abstract class Processor {
 	// when user types 3, run this method
 	
 	public int calculateValuePerProperty(String zipcode) {
-
-		if (marketValPerProperty != null && marketValPerProperty.containsKey(zipcode)) {
-			// value already calculated previously
-			return marketValPerProperty.get(zipcode);
-		}
-		
+        
 		if(marketValPerProperty == null) {
 			marketValPerProperty = new HashMap<>();
 		}
 		
+		if (marketValPerProperty.containsKey(zipcode)) {
+			// value already calculated previously
+			return marketValPerProperty.get(zipcode);
+		}
+		
+		
 		if(!zipPopulationMap.containsKey(zipcode) || !zipPropertyMap.containsKey(zipcode)) {
 		    
-			marketValPerProperty.put(zipcode, 0);
+			marketValPerProperty.put(zipcode, 0); //memoize data
 		    
 			return 0;
 		}
@@ -192,19 +193,19 @@ public abstract class Processor {
 	// when user types 4, run this method
 	public int calculateAreaPerProperty(String zipcode) {
 		
-		if (areaPerProperty != null && areaPerProperty.containsKey(zipcode)) {
-
-			// value already calculated previously
-			return areaPerProperty.get(zipcode);
-		}
-		
 		if(areaPerProperty == null) {
 			areaPerProperty = new HashMap<>();
 		}
 		
+		if (areaPerProperty.containsKey(zipcode)) {
+
+			// value already calculated previously
+			return areaPerProperty.get(zipcode);
+		}
+			
 		if( !zipPopulationMap.containsKey(zipcode) || !zipPropertyMap.containsKey(zipcode)) {
 			
-			areaPerProperty.put(zipcode, 0);
+			areaPerProperty.put(zipcode, 0); //memoize data
 			
 			return 0;
 		}
@@ -230,11 +231,12 @@ public abstract class Processor {
 		if(zipTotalArea == null) {
 			zipTotalArea = new HashMap<>();
 		}
+		
 		if(zipTotalArea.containsKey(zipcode)) {
 			totalArea = zipTotalArea.get(zipcode);
 		}
 		
-		if(totalArea != -1 && count != -1) {
+		if(totalArea != -1 && count != -1) {    //both total area and count have been calculated previously
 			
 			averageArea = (int) totalArea / count;
 			
@@ -296,6 +298,7 @@ public abstract class Processor {
 	
 
 	//this utility method will be called in calculateMarketValuePerHome and calculateLivableAreaPerHome methods
+	//calling methods pass appropriate calculator objects to select an algorithm
 	private int calculateDataPerProperty(String zipcode, List<Property> properties, HashMap<String, Double> zipTotalMap, HashMap<String, Integer> zipCountMap, PropertyCalculator cal) {
 		
 		return cal.calculateValuePerProperty(zipcode, properties, zipTotalMap, zipCountMap);
@@ -360,9 +363,23 @@ public abstract class Processor {
 					continue;
 				}
 				
-				List<ParkingViolation> violationsInZip = next.getValue();
+				int totalFines = -1;
+				double finesPerCapita = 0.0;
 				
-				int totalFines = 0;
+				if(zipTotalFines != null && zipTotalFines.containsKey(currentZip)) {
+					//get memoized total fines for zipcode
+					totalFines = zipTotalFines.get(currentZip);
+				}
+				
+				if(totalFines != -1) {
+					finesPerCapita = (double) totalFines / currentPopulation;
+					finesByZip.put(currentZip, finesPerCapita);
+					continue;
+				}
+				
+				List<ParkingViolation> violationsInZip = next.getValue();
+				totalFines = 0;
+				
 				for (ParkingViolation p : violationsInZip) {
 					if (p.getZipCode() == null || !p.getState().equals("PA") ) {
 						// skip over non-PA plates and unknown zip codes
@@ -375,14 +392,15 @@ public abstract class Processor {
 				if(zipTotalFines == null) {
 					zipTotalFines = new HashMap<>();
 				}
-				// if total fines is 0 (or negative, skip)
+				
+				// if total fines is 0, skip
 				if (totalFines == 0) {
-					zipTotalFines.put(currentZip, 0);
+					zipTotalFines.put(currentZip, 0); //memoize data
 					continue;
 				}
 				
 				// calculate fines per capita and add to final set
-				double finesPerCapita = ((double) totalFines) / currentPopulation; 
+				finesPerCapita = ((double) totalFines) / currentPopulation; 
 				
 				finesByZip.put(currentZip, finesPerCapita);
 				
@@ -422,7 +440,7 @@ public abstract class Processor {
 		}
 		
 		if(zipTotalValue.containsKey(zipcode)) {
-			totalPropertyVal = zipTotalValue.get(zipcode);
+			totalPropertyVal = zipTotalValue.get(zipcode); //get memoized data
 		}
 		
 		if(marketValPerCapita == null) {
@@ -432,7 +450,7 @@ public abstract class Processor {
 		
 		if(totalPropertyVal != -1) {
 			averageVal = (int) totalPropertyVal / populationOfZip;
-			marketValPerCapita.put(zipcode, averageVal);
+			marketValPerCapita.put(zipcode, averageVal); //memoize data
 			return averageVal;
 		}
 		
@@ -454,12 +472,9 @@ public abstract class Processor {
 					
 					// add property value of this property to the total
 					
-					double propertyVal = 0;
-					
-					
 					try {
 						
-						propertyVal = Double.parseDouble(marketValue);
+						double propertyVal = Double.parseDouble(marketValue);
 					
 					    totalPropertyVal = totalPropertyVal + propertyVal;
 					   
@@ -586,6 +601,7 @@ public abstract class Processor {
 			
 			int totalFine = -1;
 			int count = -1;
+			double avgFine = 0.0;
 			
 			if (zipTotalFines == null) {
 				zipTotalFines = new HashMap<>();
@@ -604,7 +620,14 @@ public abstract class Processor {
 				count = zipNumOfViolations.get(currentZip); //get memoized total number of parking violations
 			}
 			
-			if (totalFine == -1 && count == -1) {
+			if(count == 0) {
+				avgFine = 0.0;
+				
+			}	
+			else if(totalFine != -1 && count != -1) {
+				avgFine = totalFine / count;
+			}
+			else {
 				
 				List<ParkingViolation> violations = next.getValue();
 				
@@ -629,14 +652,19 @@ public abstract class Processor {
 				//memoize total fines and total number of violations
 				zipTotalFines.put(currentZip, totalFine);
 				zipNumOfViolations.put(currentZip, count);
+				
+				//calculate average fine
+				if (count == 0) {
+					avgFine = 0.0;
+				}
+				else {
+					avgFine = totalFine / count;
+				}
+				
 			}
-			
-			
-			double avgFine = totalFine / count;
-			
-			minFine = Math.min(minFine, avgFine);
-			maxFine = Math.max(maxFine, avgFine);
-			
+		
+		   minFine = Math.min(minFine, avgFine);
+		   maxFine = Math.max(maxFine, avgFine);
 		   averageFine.put(currentZip, avgFine); //memoize data
 			
 		}
@@ -702,7 +730,13 @@ public abstract class Processor {
 				count = zipPropNumForArea.get(currentZip);
 			}
 			
-			if(totalArea == -1 && count == -1) {
+			if( count == 0) {
+				averageArea = 0.0;
+			}
+			else if( count != -1 && totalArea != -1) {
+				averageArea = totalArea / count;
+			}
+			else {
 				totalArea = 0;
 				count = 0;
 				List<Property> properties = next.getValue();
@@ -730,16 +764,16 @@ public abstract class Processor {
 				
                 zipTotalArea.put(currentZip, totalArea);
 			    zipPropNumForArea.put(currentZip, count);
+			    
+			    if(count == 0) {
+			    	averageArea = 0.0;
+			    }
+			    else {
+			    	averageArea = totalArea / count;
+			    }
+			    
 			}
-			
-			if(count == 0) {
-				averageArea = 0;
-			}
-			else {
-				averageArea = totalArea / count;
-			}
-			
-			
+				
 			minArea = Math.min(minArea, averageArea);
 			maxArea = Math.max(maxArea, averageArea);
 			
@@ -848,11 +882,18 @@ public abstract class Processor {
 				zipPropNumForValue = new HashMap<>();
 			}
 			
+			
 			if(zipPropNumForValue.containsKey(currentZip)) {
 				count = zipPropNumForValue.get(currentZip);
 			}
 			
-			if(totalPrice == -1 && count == -1) {
+			if( count == 0) {
+				averagePrice = 0.0;
+			}
+			else if( count != -1 && totalPrice != -1) {
+				averagePrice = totalPrice / count;
+			}
+			else {
 				List<Property> properties = next.getValue();	
 				totalPrice = 0;
 				count = 0;
@@ -879,19 +920,18 @@ public abstract class Processor {
 				
 			    zipTotalValue.put(currentZip, totalPrice);
 			    zipPropNumForValue.put(currentZip, count);
-			}
-			
-			if(count == 0) {
-				averagePrice = 0;
-			}
-			else {
-				averagePrice = totalPrice / count;
-			}
-			
+			    
+			    if(count == 0) {
+					averagePrice = 0.0;
+				}
+				else {
+					averagePrice = totalPrice / count;
+				}
+			}		
 			
 			minPropertyValue = Math.min(minPropertyValue, averagePrice);
 			maxPropertyValue = Math.max(maxPropertyValue, averagePrice);
-			
+			//memoize data
 			averagePropertyValues.put(currentZip, averagePrice);
 			
 			

@@ -47,6 +47,7 @@ public class ParkingCSVReader extends ParkingViolationReader {
 				
 				} catch(NumberFormatException e) {
 					e.printStackTrace();
+					continue;
 				}
 				
 				String state = wordsInLine[4];

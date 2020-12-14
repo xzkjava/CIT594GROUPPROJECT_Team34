@@ -27,7 +27,7 @@ public class Main {
 		
 		Logger logger = Logger.getInstance();
 		
-		logger.log(String.valueOf(System.currentTimeMillis()) + " "
+		logger.log(System.currentTimeMillis() + " "
 				+ parkingFileType + " "
 				+ parkingFileName + " "
 				+ propertyFileName + " "
@@ -44,7 +44,7 @@ public class Main {
 		
 	}
 	
-	public static void verifyArguments(String[ ] args) {
+	private static void verifyArguments(String[ ] args) {
 		
 		
 		if(args == null ||args.length != 5) {

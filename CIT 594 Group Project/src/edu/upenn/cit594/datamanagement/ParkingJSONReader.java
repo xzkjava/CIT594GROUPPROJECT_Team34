@@ -51,6 +51,7 @@ public class ParkingJSONReader extends ParkingViolationReader{
 		    		 fine = Integer.parseInt(violation.get("fine").toString());
 		    	} catch(NumberFormatException e) {
 		    		 e.printStackTrace();
+		    		 continue;
 		    	}
 		    	
 		    	String  state = violation.get("state").toString();

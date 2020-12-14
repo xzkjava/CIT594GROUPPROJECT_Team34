@@ -10,7 +10,7 @@ public class ValueCalculator implements PropertyCalculator{
 	/*
 	 * This method calculates average market value per property for a given zipcode,
 	 * insert an entry mapping the zipcode to its total market value in a memoized HashMap object,
-	 * innsert an entry mapping the zipcode to its total number of properties in a memoized HashMap object.
+	 * insert an entry mapping the zipcode to its total number of properties in a memoized HashMap object.
 	 */
 	@Override
 	public int calculateValuePerProperty(String zipcode, List<Property> properties, HashMap<String, Double> zipTotalMap, HashMap<String, Integer> zipCountMap) {
@@ -38,6 +38,7 @@ public class ValueCalculator implements PropertyCalculator{
 						
 			}catch(NumberFormatException e) {
 				e.printStackTrace();
+				continue;
 			}
 		}
 		

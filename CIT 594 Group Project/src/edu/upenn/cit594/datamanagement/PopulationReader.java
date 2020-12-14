@@ -51,6 +51,7 @@ public class PopulationReader {
 				}
 				catch(NumberFormatException e) {
 					e.printStackTrace();
+					continue;
 				}
 				
 				Population popToAdd = new Population(zipcode, size);

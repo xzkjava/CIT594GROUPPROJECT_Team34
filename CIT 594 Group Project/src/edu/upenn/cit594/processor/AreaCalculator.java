@@ -36,6 +36,7 @@ public class AreaCalculator implements PropertyCalculator{
 					
 				}catch(NumberFormatException e) {
 					e.printStackTrace();
+					continue;
 				}
 				
 			}

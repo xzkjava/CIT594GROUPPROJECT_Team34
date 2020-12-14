@@ -10,8 +10,6 @@ import java.util.SortedMap;
 import java.util.Map.Entry;
 
 import edu.upenn.cit594.logging.Logger;
-import edu.upenn.cit594.processor.CSVProcessor;
-import edu.upenn.cit594.processor.JSONProcessor;
 import edu.upenn.cit594.processor.Processor;
 
 public class CommandLineUserInterface {
@@ -49,7 +47,6 @@ public class CommandLineUserInterface {
 					System.exit(1);
 				}
 				else if (!input.matches("^\\d+$")) {
-					System.out.println(input);
 					System.out.println("ERROR: The choice should be numbers only");
 					System.exit(1);
 				}
@@ -82,6 +79,7 @@ public class CommandLineUserInterface {
 	
 	//need to add prompt 6
 	public void displayPrompts() {
+		System.out.println();
 		System.out.println("Enter 0 to exit.\n" 
 				+ "Enter 1 to show the total population for all ZIP Codes.\n"
 				+ "Enter 2 to show the total fines per capita for each ZIP Code.\n"
@@ -91,17 +89,6 @@ public class CommandLineUserInterface {
 				+ "Enter 6 to show the ratings of all ZIP Codes based on the normalized averages of available data.\n");
 	}
 	
-//	public boolean isAllDigits(String input) {
-//		
-//		for(int i = 0; i < input.length(); i++) {
-//			if(!Character.isDigit(input.charAt(0))) {
-//				return false;
-//			}
-//		}
-//		
-//		return true;
-//	}
-//	
 	public void processUserCommand(int choice) {
 		
 		String zipcode = "";
@@ -122,7 +109,7 @@ public class CommandLineUserInterface {
 				df.setRoundingMode(RoundingMode.FLOOR);
 				while (it.hasNext()) {
 					Entry<String, Double> next = it.next();
-					System.out.println(next.getKey() + ": " + df.format(next.getValue()));
+					System.out.println(next.getKey() + " " + df.format(next.getValue()));
 				}
 				displayPrompts();
 				break;
@@ -185,24 +172,5 @@ public class CommandLineUserInterface {
 		return zipcode;
 		
 	}
-	
-//	public boolean isAllDigits(String zip) {
-//		for(int i = 0; i < zip.length(); i++) {
-//			if(!Character.isDigit(zip.charAt(i))) {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
-	
-//   public static Processor createProcessor(String parkingFileType, String parkingFileName, String propertyFileName, String populationFileName) {
-//		
-//		if(parkingFileType.equals("csv")){
-//			return new CSVProcessor(parkingFileName, propertyFileName, populationFileName);
-//		}
-//		
-//		return new JSONProcessor(parkingFileName, propertyFileName, populationFileName);		
-//		
-//	}
 	
 }

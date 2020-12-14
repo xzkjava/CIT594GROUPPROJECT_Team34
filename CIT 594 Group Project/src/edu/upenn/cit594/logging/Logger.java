@@ -42,7 +42,7 @@ public class Logger {
 			out.write(message);
 			out.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
@@ -52,7 +52,7 @@ public class Logger {
 		try {
 			out.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
